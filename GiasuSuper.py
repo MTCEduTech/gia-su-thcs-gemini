@@ -26,10 +26,22 @@ def get_gemini_client():
 client = get_gemini_client()
 
 
+# Hàm này sẽ xóa lịch sử chat khỏi session_state và buộc ứng dụng chạy lại
+def new_chat():
+    if "chat_session" in st.session_state:
+        del st.session_state["chat_session"]
+    # Không xóa "chat_history_titles" để vẫn hiển thị lịch sử cũ
+    st.rerun() 
+
+
 # ********** BƯỚC 2: Định Nghĩa "Bộ Não" Đa Môn Học và Khởi Tạo Chat Session **********
+# 1. Khởi tạo danh sách lưu trữ tiêu đề lịch sử (nếu chưa có)
+if "chat_history_titles" not in st.session_state:
+    st.session_state.chat_history_titles = []
+
 if "chat_session" not in st.session_state:
     
-    # ** SYSTEM INSTRUCTIONS MỚI: Hỗ Trợ Đa Môn Học THCS **
+    # ** SYSTEM INSTRUCTIONS: Gia Sư Toàn Diện THCS - Đã Thêm Quy Tắc Phủ Quyết **
     system_instruction = """
 BẠN LÀ AI: Bạn là "Gia Sư Toàn Diện THCS", một trợ lý AI chuyên nghiệp, thân thiện, và kiên nhẫn, chuyên hỗ trợ học sinh Trung học cơ sở (Lớp 6 đến Lớp 9) tại Việt Nam trong MỌI môn học.
 
@@ -73,10 +85,35 @@ PHONG CÁCH: Luôn giữ thái độ tích cực, thân thiện, động viên v
         model="gemini-2.5-flash", # Hỗ trợ đa phương thức và tốc độ tốt
         config=config
     )
+    
+    # Thêm cờ (flag) để theo dõi phiên này đã được đặt tiêu đề chưa
+    st.session_state.current_session_titled = False
+
 
 # ********** BƯỚC 3: Xây Dựng Giao Diện Người Dùng (UI) **********
 st.title("🎓 Gia Sư AI THCS Bình San")
 st.caption("Hỗ trợ học tập các môn Lớp 6-9 qua văn bản và hình ảnh.")
+
+# ---------- SIDEBAR: Quản lý Phiên Chat và Lịch sử (MỚI) ----------
+with st.sidebar:
+    st.button(
+        "✨ Bắt Đầu Cuộc Trò Chuyện Mới", 
+        on_click=new_chat, 
+        use_container_width=True
+    )
+    
+    st.markdown("---") 
+    
+    # Hiển thị lịch sử trò chuyện gần đây (Tiêu đề)
+    st.subheader("💬 Lịch Sử Gần Đây")
+    if st.session_state.chat_history_titles:
+        for title in st.session_state.chat_history_titles:
+            # Gạch chân nhẹ để tạo hiệu ứng link
+            st.markdown(f"*{title}*")
+    else:
+        st.markdown("Chưa có cuộc trò chuyện nào.")
+# -----------------------------------------------------------------
+
 
 st.markdown("---")
 st.markdown("Xin chào! Tôi là Gia Sư AI của Trường THCS Bình San, sẵn sàng hỗ trợ bạn trong **Tất cả các môn học THCS**. ")
@@ -139,12 +176,30 @@ if prompt := st.chat_input("Nhập câu hỏi (VD: 'Hướng dẫn em viết vă
         # Sử dụng .send_message và truyền danh sách contents [ảnh, text] hoặc [text]
         response = st.session_state.chat_session.send_message(contents)
     
+    # *** PHẦN MỚI: TẠO TIÊU ĐỀ CHO CUỘC TRÒ CHUYỆN ĐẦU TIÊN ***
+    if not st.session_state.current_session_titled and len(st.session_state.chat_session.get_history()) == 2:
+        try:
+            # Dùng Gemini để tóm tắt 3-5 từ cho cuộc trò chuyện
+            title_prompt = f"Tạo một tiêu đề ngắn (tối đa 5 từ, chỉ cần nội dung) cho cuộc trò chuyện này, dựa trên câu hỏi đầu tiên: '{prompt[:50]}...'"
+            title_response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=[title_prompt],
+                config=types.GenerateContentConfig(temperature=0.0) # Đặt nhiệt độ thấp để đảm bảo tiêu đề ngắn gọn
+            )
+            title = title_response.text.strip().replace('"', '')
+            
+            # Lưu tiêu đề vào lịch sử chung
+            st.session_state.chat_history_titles.insert(0, title) # Thêm vào đầu danh sách
+            st.session_state.current_session_titled = True 
+            
+            # Rerun để cập nhật Sidebar với tiêu đề mới
+            st.rerun() 
+            
+        except Exception as e:
+            # Nếu có lỗi (ví dụ: hết token), vẫn tiếp tục mà không có tiêu đề
+            pass 
+    # ***************************************************************
+    
     # 3. Hiển thị phản hồi của AI
     with st.chat_message("Gia Sư"):
         st.markdown(response.text)
-
-
-
-
-
-
