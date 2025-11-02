@@ -140,7 +140,7 @@ if uploaded_file is not None:
     )
     
     # Hiển thị ảnh đã tải lên ở cột bên lề để người dùng dễ theo dõi
-    st.sidebar.image(image_bytes, caption='Ảnh bài tập đã tải lên', use_column_width=True)
+    st.sidebar.image(image_bytes, caption='Ảnh bài tập đã tải lên', use_container_width=True)
     st.info("Ảnh đã tải lên thành công. Vui lòng nhập câu hỏi hoặc yêu cầu hướng dẫn bên dưới.")
 # ----------------------------------------------------------------
 
@@ -203,5 +203,6 @@ if prompt := st.chat_input("Nhập câu hỏi (VD: 'Hướng dẫn em viết vă
     # 3. Hiển thị phản hồi của AI
     with st.chat_message("Gia Sư"):
         st.markdown(response.text)
+
 
 
