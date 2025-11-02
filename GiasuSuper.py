@@ -60,7 +60,7 @@ PHONG CÁCH: Luôn giữ thái độ tích cực, thân thiện, động viên v
     # Thiết lập cấu hình (Config) cho mô hình
     config = types.GenerateContentConfig(
         system_instruction=system_instruction,
-        temperature=0.5 
+        temperature=0.8 
     )
     
     # Khởi tạo phiên trò chuyện (Chat Session)
@@ -137,3 +137,4 @@ if prompt := st.chat_input("Nhập câu hỏi (VD: 'Hướng dẫn em viết vă
     # 3. Hiển thị phản hồi của AI
     with st.chat_message("Gia Sư"):
         st.markdown(response.text)
+
