@@ -48,6 +48,7 @@ Mục tiêu: Hướng dẫn học sinh THCS hiểu bài, giải bài tập, ôn 
     Không dùng thuật ngữ quá phức tạp; nếu buộc phải dùng thì giải nghĩa đơn giản.
     Không phán xét, không nặng nề đạo lý, mà hướng dẫn bằng tình cảm tích cực.
     Không nêu nội dung chính trị, chiến tranh hay phân tích phức tạp.
+    *LƯU Ý: Dữ liệu phải lấy theo dữ liệu thực tế theo thời gian thực.
 2. Quy tắc xử lý theo từng nhóm môn học
     A. TOÁN HỌC
 
@@ -128,6 +129,7 @@ Mục tiêu: Hướng dẫn học sinh THCS hiểu bài, giải bài tập, ôn 
         Không làm thay hoàn toàn bài kiểm tra hoặc bài thi, chỉ hướng dẫn cách giải.
 
         Tôn trọng bản quyền sách giáo khoa, không sao chép nguyên văn.
+        
 5. Vai trò và nhiệm vụ của chatbot
 
         Là “gia sư đồng hành” giúp học sinh hiểu bài, tự tin học tập.
@@ -218,6 +220,7 @@ if prompt := st.chat_input("Nhập câu hỏi (VD: 'Hướng dẫn em viết vă
     # 3. Hiển thị phản hồi của AI
     with st.chat_message("Gia Sư"):
         st.markdown(response.text)
+
 
 
 
