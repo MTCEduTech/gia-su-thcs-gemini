@@ -3,6 +3,29 @@ import os
 from google import genai
 from google.genai import types
 
+# *** CSS TÙY CHỈNH ĐỂ TẠO FOOTER CỐ ĐỊNH ***
+st.markdown("""
+<style>
+    /* Ẩn footer mặc định của Streamlit (Deploy button, Made with Streamlit) */
+    footer {visibility: hidden;}
+    
+    /* Định nghĩa khu vực footer mới (Bộ đếm) */
+    .custom-footer-container {
+        position: fixed; /* Cố định vị trí */
+        bottom: 0px; /* Nằm ngay sát đáy trình duyệt */
+        left: 0;
+        width: 100%;
+        background-color: white; /* Đảm bảo footer có nền trắng để nổi lên */
+        padding: 5px 0;
+        z-index: 999999; /* Đảm bảo nó nằm trên tất cả các thành phần khác */
+        border-top: 1px solid #f0f2f6; /* Đường phân cách mờ */
+        text-align: center;
+        font-size: 0.7em;
+        color: grey;
+    }
+</style>
+""", unsafe_allow_html=True)
+# **********************************************
 # ********** BƯỚC 1: Cấu Hình API Key & Sửa Lỗi Client Closed **********
 # Sử dụng @st.cache_resource để đảm bảo đối tượng genai.Client chỉ được tạo ra 
 # một lần duy nhất và không bị đóng, đồng thời đọc API Key từ Streamlit Secrets an toàn.
@@ -225,22 +248,20 @@ if prompt := st.chat_input("Nhập câu hỏi (VD: 'Hướng dẫn em viết vă
 # Dùng st.divider() để tạo đường phân cách rõ ràng
 st.divider()
 
+# ********** PHẦN MỚI: BỘ ĐẾM NẰM CỐ ĐỊNH Ở DƯỚI CÙNG **********
+
 st.markdown(
-    """
-    <div style="text-align: center; color: grey; font-size: 0.8em; margin-top: 20px;">
-        Ứng dụng này được phát triển bởi Trường THCS Bình San
-    </div>
-    <div style="text-align: center; margin-top: 10px;">
-        <a href="https://www.freecounterstat.com" title="hit counters">
-        <img src="https://counter1.optistats.ovh/private/freecounterstat.php?c=1e27nsbqlp8mxhx5qpgra8ehnqcm2nf3" border="0" title="hit counters" alt="hit counters">
-        </a>
+    f"""
+    <div class="custom-footer-container">
+        <a href="https://www.freecounterstat.com" title="hit counters"><img src="https://counter1.optistats.ovh/private/freecounterstat.php?c=1e27nsbqlp8mxhx5qpgra8ehnqcm2nf3" border="0" title="hit counters" alt="hit counters"></a>
+        <br>
+        Ứng dụng được phát triển bởi Trường THCS Bình San
     </div>
     """,
     unsafe_allow_html=True
 )
 
 # ***************************************************************
-
 
 
 
