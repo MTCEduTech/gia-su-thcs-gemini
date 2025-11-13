@@ -120,8 +120,8 @@ if "chat_session" not in st.session_state:
     )
 
 # ==================== 🧠 GIAO DIỆN NGƯỜI DÙNG ====================
-st.title("🎓 Gia Sư AI - THCS Đức Phú – Trí Tuệ Nhân Tạo Giúp Học Tập")
-st.caption("Xin chào 👋 Tôi là **Gia Sư AI do thầy Mai Thiện Chánh tạo ra** – hãy gửi câu hỏi hoặc hình bài tập, tôi sẽ giúp bạn học thật hiệu quả!")
+st.title("🎓 Trợ lý AI - Hỗ trợ Học Tập - Thầy Chánh")
+st.caption("Xin chào 👋 Tôi là **Trợ lý AI do thầy Mai Thiện Chánh tạo ra** – hãy gửi câu hỏi hoặc hình bài tập, tôi sẽ giúp bạn học thật hiệu quả!")
 
 st.markdown("---")
 st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để được hướng dẫn chi tiết:**")
@@ -136,8 +136,8 @@ if uploaded_file:
 
 # ==================== 🕐 HIỂN THỊ LỊCH SỬ CHAT ====================
 for msg in st.session_state.chat_session.get_history():
-    role = "Gia Sư" if msg.role == "model" else "Học sinh"
-    icon = "🤖" if role == "Gia Sư" else "👩‍🎓"
+    role = "Thầy Chánh" if msg.role == "model" else "Học sinh"
+    icon = "🤖" if role == "Thầy Chánh" else "👩‍🎓"
     with st.chat_message(role):
         st.markdown(f"<span class='chat-icon'>{icon}</span>{msg.parts[0].text}", unsafe_allow_html=True)
 
@@ -154,11 +154,11 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
         with st.chat_message("Học sinh"):
             st.markdown(f"<span class='chat-icon'>👩‍🎓</span>{prompt}", unsafe_allow_html=True)
 
-    with st.spinner("⏳ Gia sư đang suy nghĩ..."):
+    with st.spinner("⏳ Thầy Chánh đang suy nghĩ..."):
         response = st.session_state.chat_session.send_message(contents)
 
     # Hiệu ứng “gõ chữ dần dần”
-    with st.chat_message("Gia Sư"):
+    with st.chat_message("Thầy Chánh"):
         placeholder = st.empty()
         text_display = ""
         for char in response.text:
@@ -170,6 +170,7 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
 # ==================== 🧾 FOOTER ====================
 st.markdown("""
 <div class="custom-footer-container">
-    © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Mai Thiện Chánh | Trường THCS Đức Phú, Lâm Đồng
+    © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng
 </div>
 """, unsafe_allow_html=True)
+
