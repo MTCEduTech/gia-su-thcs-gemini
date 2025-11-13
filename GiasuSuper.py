@@ -4,90 +4,120 @@ import time
 from google import genai
 from google.genai import types
 
-# ==================== 🎨 CSS TÙY CHỈNH GIAO DIỆN ====================
+# ==================== 🎨 CSS TÙY CHỈNH GIAO DIỆN CHUYÊN NGHIỆP ====================
 st.markdown("""
 <style>
 /* ----------- Tổng thể ----------- */
 [data-testid="stAppViewContainer"] {
-    background: linear-gradient(135deg, #e8f0ff 0%, #f8fbff 100%);
-    font-family: "Segoe UI", sans-serif;
+    /* Nền gradient nhẹ nhàng, chuyên nghiệp */
+    background: linear-gradient(135deg, #ffffff 0%, #f7f9fc 100%);
+    font-family: 'Inter', 'Segoe UI', sans-serif; /* Font hiện đại hơn */
+    color: #333333; /* Màu chữ chính */
 }
 
 /* ----------- Tiêu đề ----------- */
 h1 {
-    color: #003366;
+    color: #004080; /* Màu xanh đậm, uy tín */
     text-align: center;
-    font-weight: 700;
+    font-weight: 800; /* Đậm hơn để nổi bật */
     margin-bottom: 0.2em;
+    padding-top: 10px;
 }
 [data-testid="stCaption"] {
     text-align: center;
-    color: #444;
-    font-size: 1.05em;
+    color: #555555;
+    font-size: 1.0em;
+    font-style: italic;
+}
+
+/* ----------- Đường ngăn cách ----------- */
+hr {
+    border-top: 1px solid #e0e0e0;
+    margin: 1.5rem 0;
 }
 
 /* ----------- Hộp chat ----------- */
 .stChatMessage {
-    border-radius: 16px;
-    padding: 10px 18px;
-    margin: 8px 0;
-    line-height: 1.5;
-    font-size: 1.05em;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-radius: 18px; /* Bo góc mềm mại hơn */
+    padding: 12px 20px;
+    margin: 10px 0;
+    line-height: 1.6;
+    font-size: 1.0em;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Đổ bóng tinh tế */
+    transition: all 0.3s ease;
 }
+/* Tin nhắn Học sinh (User) */
 .stChatMessage[data-testid="stChatMessageUser"] {
-    background-color: #d8ecff;
-    border: 1px solid #b5d6ff;
+    background-color: #e6f7ff; /* Xanh nhạt tinh tế */
+    border: none; /* Bỏ border để tối giản */
+    color: #003366;
+    margin-left: 20%; /* Dịch sang phải */
 }
+/* Tin nhắn Thầy Chánh (Assistant) */
 .stChatMessage[data-testid="stChatMessageAssistant"] {
-    background-color: #f2f5ff;
-    border: 1px solid #dce3ff;
+    background-color: #ffffff; /* Trắng sạch sẽ */
+    border: 1px solid #e0e0e0;
+    color: #333333;
+    margin-right: 20%; /* Dịch sang trái */
 }
 
 /* ----------- Biểu tượng chat ----------- */
 .chat-icon {
-    font-size: 22px;
+    font-size: 20px;
     margin-right: 8px;
-    vertical-align: middle;
+    vertical-align: top; /* Căn chỉnh biểu tượng */
 }
 
 /* ----------- File upload ----------- */
 .stFileUploader {
-    border: 2px dashed #99baff;
-    border-radius: 12px;
-    background-color: #f5f8ff;
+    border: 3px dashed #b3d9ff; /* Màu xanh dịu */
+    border-radius: 15px;
+    background-color: #f0f8ff; /* Nền xanh rất nhạt */
+    padding: 15px;
+    margin-bottom: 20px;
 }
 .stFileUploader:hover {
-    background-color: #eaf1ff;
+    background-color: #e3f2ff;
+    border-color: #80bfff;
 }
 
 /* ----------- Thanh nhập chat ----------- */
 [data-testid="stChatInput"] {
     background-color: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.08); /* Bóng rõ hơn */
+    padding: 10px;
+}
+/* Nút Gửi */
+[data-testid="stChatInput"] button {
+    background-color: #0066cc; /* Màu xanh dương chủ đạo */
+    border-radius: 8px;
+}
+[data-testid="stChatInput"] button:hover {
+    background-color: #005bb5;
 }
 
 /* ----------- Spinner ----------- */
 .stSpinner > div {
     color: #0066cc;
-    font-weight: 600;
+    font-weight: 700;
 }
 
-/* ----------- Footer ----------- */
+/* ----------- Footer (Giữ nguyên phong cách chuyên nghiệp, thay màu hiện đại hơn) ----------- */
 footer {visibility: hidden;}
 .custom-footer-container {
     position: fixed;
     bottom: 0px;
     left: 0;
     width: 100%;
-    background: linear-gradient(90deg, #004080, #0066cc);
-    padding: 6px 0;
+    /* Gradient footer tông xanh-xám chuyên nghiệp */
+    background: linear-gradient(90deg, #004d99, #0066cc, #004d99);
+    padding: 8px 0;
     text-align: center;
-    font-size: 0.8em;
+    font-size: 0.85em;
     color: white;
     z-index: 999999;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -173,4 +203,3 @@ st.markdown("""
     © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng
 </div>
 """, unsafe_allow_html=True)
-
