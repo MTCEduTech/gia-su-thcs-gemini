@@ -124,37 +124,6 @@ footer {visibility: hidden;}
     z-index: 999999;
     box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
 }
-
-/* ----------- NÚT VỀ TRANG CHỦ CỐ ĐỊNH (Home Button) ----------- */
-.home-button-container {
-    position: fixed;
-    bottom: 50px; /* Đặt phía trên Footer và nút Manage app */
-    right: 0px;
-    z-index: 1000000; /* Đảm bảo nút luôn nằm trên cùng */
-}
-
-/* Sửa lỗi: Đã loại bỏ .home-button-trigger vì không dùng st.markdown nữa. */
-
-/* Giữ lại style cũ của thẻ a (cho trường hợp dùng components.html có thẻ <a>) */
-.home-button-container a {
-    text-decoration: none;
-    display: inline-block;
-    background-color: #007bff; /* Màu xanh nổi bật */
-    color: white;
-    padding: 10px 18px;
-    border-radius: 12px;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
-    transition: background-color 0.3s, transform 0.2s;
-}
-.home-button-container a:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-}
-.home-button-container a:active {
-    transform: translateY(0);
-}
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -201,49 +170,6 @@ if uploaded_file:
     st.sidebar.image(image_bytes, caption='Ảnh bài tập đã tải', width=250)
     st.success("✅ Ảnh đã tải thành công!")
 
-# ==================== NÚT VỀ TRANG CHỦ CỐ ĐỊNH SÁT DƯỚI (Sử dụng components.html để hoạt động chắc chắn) ====================
-components.html(
-    """
-    <style>
-        /* CSS Cố Định Vị Trí VÀ Kiểu Dáng Nút */
-        .home-button-container-fixed {
-            /* 👈 Đã thêm: Định vị trí cố định cho toàn bộ nội dung trong iframe của component */
-            position: fixed;
-            bottom: 50px;
-            right: 0px;
-            z-index: 1000001; 
-        }
-        .home-button-link {
-            text-decoration: none;
-            display: block; 
-            background-color: #007bff; 
-            color: white;
-            padding: 10px 18px;
-            border-radius: 12px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
-            transition: background-color 0.3s, transform 0.2s;
-            text-align: center;
-        }
-        .home-button-link:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
-        }
-        .home-button-link:active {
-            transform: translateY(0);
-        }
-    </style>
-    <div class="home-button-container-fixed">
-        <a href="https://dayhoctichcuc.netlify.app/" target="_top" class="home-button-link">
-            🏠 Về trang chủ
-        </a>
-    </div>
-    """,
-    # Đặt chiều cao/rộng tối thiểu, vị trí cố định sẽ không bị ảnh hưởng bởi tham số này
-    height=100,
-    width=200, 
-)
-
 st.markdown("---") # Giữ nguyên đường ngăn cách
 # ==================== 🕐 HIỂN THỊ LỊCH SỬ CHAT ====================
 for msg in st.session_state.chat_session.get_history():
@@ -282,8 +208,11 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
 # ==================== 🧾 FOOTER ====================
 st.markdown("""
 <div class="custom-footer-container">
-    © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng
+    © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng || <a href="https://dayhoctichcuc.netlify.app/" target="_top" class="home-button-link">
+            🏠 Về trang chủ
+        </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
