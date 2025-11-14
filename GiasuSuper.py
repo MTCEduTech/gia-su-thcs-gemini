@@ -127,8 +127,8 @@ footer {visibility: hidden;}
 /* ----------- NÚT VỀ TRANG CHỦ CỐ ĐỊNH (Home Button) ----------- */
 .home-button-container {
     position: fixed;
-    bottom: 0px; /* Đặt phía trên Footer và nút Manage app */
-    right: 50px;
+    bottom: 50px; /* Đặt phía trên Footer và nút Manage app */
+    right: 0px;
     z-index: 1000000; /* Đảm bảo nút luôn nằm trên cùng */
 }
 .home-button-container a {
@@ -240,4 +240,5 @@ st.markdown("""
     © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng
 </div>
 """, unsafe_allow_html=True)
+
 
