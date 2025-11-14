@@ -195,16 +195,14 @@ if uploaded_file:
     st.sidebar.image(image_bytes, caption='Ảnh bài tập đã tải', width=250)
     st.success("✅ Ảnh đã tải thành công!")
     
-    # ==================== NÚT VỀ TRANG CHỦ CỐ ĐỊNH SÁT DƯỚI (Dùng JS để ép chuyển hướng) ====================
+    # ==================== NÚT VỀ TRANG CHỦ CỐ ĐỊNH SÁT DƯỚI ====================
 st.markdown("""
 <div class="home-button-container">
-    <div class="home-button-trigger" onclick="window.top.location.href = 'https://dayhoctichcuc.netlify.app/';">
+    <a href="https://dayhoctichcuc.netlify.app/" target="_top">
         🏠 Về trang chủ
-    </div>
+    </a>
 </div>
-""", unsafe_allow_html=True) # Dùng window.top.location.href để ép chuyển hướng toàn bộ cửa sổ
-
-st.markdown("---")
+""", unsafe_allow_html=True)
 
 # ==================== 🕐 HIỂN THỊ LỊCH SỬ CHAT ====================
 for msg in st.session_state.chat_session.get_history():
@@ -245,6 +243,7 @@ st.markdown("""
     © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
