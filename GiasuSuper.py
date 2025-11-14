@@ -123,6 +123,32 @@ footer {visibility: hidden;}
     z-index: 999999;
     box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
 }
+
+/* ----------- NÚT VỀ TRANG CHỦ CỐ ĐỊNH (Home Button) ----------- */
+.home-button-container {
+    position: fixed;
+    bottom: 0px; /* Đặt phía trên Footer và nút Manage app */
+    right: 50px;
+    z-index: 1000000; /* Đảm bảo nút luôn nằm trên cùng */
+}
+.home-button-container a {
+    text-decoration: none;
+    display: inline-block;
+    background-color: #007bff; /* Màu xanh nổi bật */
+    color: white;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+    transition: background-color 0.3s, transform 0.2s;
+}
+.home-button-container a:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+.home-button-container a:active {
+    transform: translateY(0);
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -153,7 +179,13 @@ if "chat_session" not in st.session_state:
         model="gemini-2.5-flash",
         config=config
     )
-
+st.markdown("""
+<div class="home-button-container">
+    <a href="https://dayhoctichcuc.netlify.app/" target="_self">
+        🏠 Về trang chủ
+    </a>
+</div>
+""", unsafe_allow_html=True)
 # ==================== 🧠 GIAO DIỆN NGƯỜI DÙNG ====================
 st.title("🎓 Trợ lý AI - Hỗ trợ Học Tập - Thầy Chánh")
 st.caption("Xin chào 👋 Tôi là **Trợ lý AI do thầy Mai Thiện Chánh tạo ra** – Hãy gửi câu hỏi hoặc hình bài tập, tôi sẽ giúp bạn học thật hiệu quả!")
@@ -208,3 +240,4 @@ st.markdown("""
     © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng
 </div>
 """, unsafe_allow_html=True)
+
