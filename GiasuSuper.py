@@ -13,7 +13,7 @@ st.markdown("""
     font-family: "Segoe UI", sans-serif;
 }
 
-/* ----------- Tiêu đề & Hộp chat (Giữ nguyên cấu trúc ban đầu) ----------- */
+/* ----------- Tiêu đề & Hộp chat ----------- */
 h1 { color: #003366; text-align: center; font-weight: 700; margin-bottom: 0.2em; padding-top: 10px; }
 [data-testid="stCaption"] { text-align: center; color: #444; font-size: 1.05em; }
 .stChatMessage { border-radius: 16px; padding: 10px 18px; margin: 8px 0; line-height: 1.5; font-size: 1.05em; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
@@ -22,19 +22,18 @@ h1 { color: #003366; text-align: center; font-weight: 700; margin-bottom: 0.2em;
 .chat-icon { font-size: 22px; margin-right: 8px; vertical-align: middle; }
 hr { border-top: 1px solid #eeeeee; margin: 1.5rem 0; }
 
-/* Ẩn tiêu đề hướng dẫn tải ảnh cũ */
+/* Ẩn tiêu đề hướng dẫn tải ảnh và File Uploader mặc định */
 [data-testid="stVerticalBlock"] > div > :nth-child(3) { display: none; }
-/* Ẩn File Uploader cũ (chúng ta sẽ dùng nó để tiêm nút '+' vào st.chat_input) */
 .stFileUploader { display: none; }
 
-/* ==================== FIX SCROLLING ==================== */
-/* Thêm padding dưới cùng cho nội dung chính để tránh bị thanh input cố định che mất */
+/* ==================== FIX SCROLLING VÀ CHAT INPUT ==================== */
+/* Thêm padding dưới cùng cho nội dung chính (Fixed Scrolling) */
 .main > div {
     padding-bottom: 90px; 
 }
-/* Đảm bảo thanh chat input luôn ở dưới cùng */
+/* Cần position relative trên stChatInput để nút + tiêm vào hoạt động */
 [data-testid="stChatInput"] {
-    position: relative; /* Cần cho position: absolute của nút + */
+    position: relative; 
     /* Di chuyển input text sang phải để nhường chỗ cho nút + */
     padding-left: 45px; 
 }
@@ -55,7 +54,7 @@ hr { border-top: 1px solid #eeeeee; margin: 1.5rem 0; }
     line-height: 30px;
     text-align: center;
     cursor: pointer;
-    z-index: 10000; /* Đảm bảo nổi trên input */
+    z-index: 10000; 
 }
 
 /* ----------- NÚT VỀ TRANG CHỦ CỐ ĐỊNH SÁT DƯỚI ----------- */
@@ -160,11 +159,37 @@ for msg in st.session_state.chat_session.get_history():
 # ==================== 1. FILE UPLOADER ẨN ====================
 # Phải đặt Uploader ở đây để nó tồn tại trong DOM và có thể được JS kích hoạt
 # CSS đã ẩn hoàn toàn widget này
+# Dùng callback on_change để xử lý file ngay lập tức mà không cần rerun
+def handle_file_upload():
+    uploaded_file = st.session_state.file_uploader_key
+    if uploaded_file is not None:
+        try:
+            image_bytes = uploaded_file.read()
+            image_part = types.Part.from_bytes(data=image_bytes, mime_type=uploaded_file.type)
+            
+            # Lưu dữ liệu cần thiết vào session state
+            st.session_state.uploaded_file_data = {
+                'bytes': image_bytes,
+                'part': image_part,
+                'name': uploaded_file.name
+            }
+            # Sử dụng toast để báo thành công
+            st.toast(f"✅ Ảnh '{uploaded_file.name}' đã sẵn sàng gửi!", icon='📸')
+            
+            # Xóa file khỏi file_uploader_key để tránh lỗi rerun khi chat_input được gọi
+            st.session_state.file_uploader_key = None 
+
+        except Exception as e:
+            st.error(f"Lỗi xử lý tệp: {e}")
+            st.session_state.file_uploader_key = None 
+            st.session_state.uploaded_file_data = None
+
 st.file_uploader(
     "📸 Tải ảnh", 
     type=["png", "jpg", "jpeg"],
     key="file_uploader_key",
-    label_visibility="collapsed"
+    label_visibility="collapsed",
+    on_change=handle_file_upload
 )
 
 # ==================== 2. CHAT INPUT CỐ ĐỊNH ====================
@@ -173,7 +198,7 @@ prompt = st.chat_input("💬 Gõ câu hỏi của bạn tại đây...", key="ch
 
 
 # ==================== 3. JS INJECTION VÀ LOGIC XỬ LÝ FILE ====================
-# JS Tiêm nút '+' vào st.chat_input và xử lý tệp
+# JS Tiêm nút '+' vào st.chat_input (Ổn định nhất)
 st.markdown("""
 <div id="js_injection_point"></div>
 <script>
@@ -209,46 +234,24 @@ st.markdown("""
 
 
 # ==================== 4. XỬ LÝ CHAT ====================
-# Logic xử lý File Uploader: Lưu file data vào session state khi nó được upload
-if st.session_state.file_uploader_key:
-    try:
-        uploaded_file = st.session_state.file_uploader_key
-        # Kiểm tra nếu file đã được xử lý và lưu rồi
-        if st.session_state.uploaded_file_data is None or st.session_state.uploaded_file_data['name'] != uploaded_file.name:
-            image_bytes = uploaded_file.read()
-            image_part = types.Part.from_bytes(data=image_bytes, mime_type=uploaded_file.type)
-            
-            # Lưu dữ liệu cần thiết vào session state
-            st.session_state.uploaded_file_data = {
-                'bytes': image_bytes,
-                'part': image_part,
-                'name': uploaded_file.name
-            }
-            st.toast(f"✅ Ảnh '{uploaded_file.name}' đã sẵn sàng gửi!", icon='📸')
-            # Chạy lại để cập nhật giao diện (hiển thị toast)
-            st.experimental_rerun()
-    except Exception as e:
-        st.error(f"Lỗi xử lý tệp: {e}")
-        st.session_state.file_uploader_key = None 
-        st.session_state.uploaded_file_data = None
-
-
 # Xử lý khi người dùng nhấn Enter/Gửi (prompt is not None)
 if prompt:
     contents = [prompt]
     is_image_attached = st.session_state.uploaded_file_data is not None
-
+    
+    # Lấy dữ liệu ảnh nếu có
+    image_bytes_to_send = None
     if is_image_attached:
         image_bytes_to_send = st.session_state.uploaded_file_data['bytes']
         image_part_to_send = st.session_state.uploaded_file_data['part']
-        
         contents.insert(0, image_part_to_send)
         
     # HIỂN THỊ TIN NHẮN CỦA HỌC SINH
     with st.chat_message("Học sinh"):
         if is_image_attached:
             st.markdown(f"<span class='chat-icon'>👩‍🎓</span>**Bài tập đính kèm:**", unsafe_allow_html=True)
-            st.image(image_bytes_to_send, width=180)
+            if image_bytes_to_send:
+                st.image(image_bytes_to_send, width=180)
         st.markdown(prompt)
 
     # GỬI TỚI GEMINI
@@ -266,11 +269,10 @@ if prompt:
         st.session_state.last_response = response.text
         
     # Sau khi gửi, xóa dữ liệu ảnh đã đính kèm khỏi session state
-    st.session_state.file_uploader_key = None
     st.session_state.uploaded_file_data = None
-    # Chạy lại script để xóa prompt khỏi ô nhập liệu và cập nhật giao diện
-    st.experimental_rerun()
-
+    # Xóa file_uploader_key để đảm bảo sạch sẽ cho lần upload sau
+    st.session_state.file_uploader_key = None
+    # Không cần rerun vì st.chat_input tự làm mới
 
 # ==================== 🧾 FOOTER ====================
 st.markdown("""
@@ -278,4 +280,3 @@ st.markdown("""
     © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng
 </div>
 """, unsafe_allow_html=True)
-
