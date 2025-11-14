@@ -60,7 +60,8 @@ st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để đư�
 
 /* ----------- VÙNG CHAT INPUT CỐ ĐỊNH (Sử dụng st.form) ----------- */
 /* Cố định container chứa form và file uploader */
-[data-testid="stForm"] {
+/* Dùng class của Streamlit để nhắm chính xác hơn */
+.stApp [data-testid="stForm"] {
     position: fixed;
     bottom: 50px; /* Nằm ngay trên footer */
     left: 0;
@@ -73,10 +74,13 @@ st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để đư�
     display: flex;
     align-items: center;
     gap: 10px;
+    /* Thêm khoảng đệm để không bị sát mép khi thu nhỏ */
+    padding-left: 15px;
+    padding-right: 15px;
 }
 /* Điều chỉnh khoảng cách cuộn cho nội dung chính để tránh bị che */
 [data-testid="stVerticalBlock"] {
-    padding-bottom: 120px; /* Đảm bảo lịch sử chat luôn hiển thị trên thanh input */
+    padding-bottom: 120px; 
 }
 
 /* ----------- Tùy chỉnh DẤU + (File Uploader) ----------- */
@@ -91,7 +95,7 @@ st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để đư�
     color: white;
     font-size: 24px;
     font-weight: 700;
-    border-radius: 50%; /* Hình tròn */
+    border-radius: 50%; 
     width: 40px;
     height: 40px;
     line-height: 40px;
@@ -99,17 +103,10 @@ st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để đư�
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4);
     transition: background-color 0.2s;
-    /* Căn chỉnh dọc */
     margin-top: 0px; 
 }
 .custom-upload-button:hover {
     background-color: #0056b3;
-}
-
-/* ----------- Tùy chỉnh Text Input trong Form ----------- */
-/* Đảm bảo text input chiếm hết không gian còn lại */
-.stText {
-    flex-grow: 1;
 }
 
 /* ----------- NÚT VỀ TRANG CHỦ CỐ ĐỊNH SÁT DƯỚI ----------- */
@@ -137,7 +134,7 @@ st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để đư�
     background-color: #0056b3;
 }
 
-/* ----------- Spinner & Footer giữ nguyên ----------- */
+/* ----------- CÁC PHẦN KHÁC ----------- */
 .stSpinner > div { color: #0066cc; font-weight: 700; }
 footer {visibility: hidden;}
 .custom-footer-container {
@@ -200,7 +197,6 @@ st.markdown("---")
 
 
 # ==================== 🕐 HIỂN THỊ LỊCH SỬ CHAT ====================
-# Lịch sử chat sẽ cuộn lên trên
 for msg in st.session_state.chat_session.get_history():
     role = "Thầy Chánh" if msg.role == "model" else "Học sinh"
     icon = "🤖" if role == "Thầy Chánh" else "👩‍🎓"
@@ -210,40 +206,43 @@ for msg in st.session_state.chat_session.get_history():
 # ==================== VÙNG CHAT INPUT & UPLOADER CỐ ĐỊNH (Dùng st.form) ====================
 # Đặt form ở cuối file, Streamlit sẽ tự động cố định nó theo CSS đã định nghĩa
 with st.form(key='chat_form', clear_on_submit=True):
+    
+    # 1. Widget File Uploader THẬT (bị ẩn bởi CSS)
+    # Phải đặt Uploader trước để JS dễ dàng tìm thấy nó trong DOM
+    uploaded_file = st.file_uploader(
+        "📸 Tải ảnh", 
+        type=["png", "jpg", "jpeg"],
+        key="file_uploader_key",
+        label_visibility="collapsed"
+    )
+    
     # Dùng st.columns để căn chỉnh nút "+" và ô nhập liệu
     col_upload, col_input, col_send = st.columns([1, 8, 1]) 
     
-    # 1. Nút "+" (Upload)
     with col_upload:
-        # File Uploader THẬT (bị ẩn bởi CSS), dùng key để JS tìm thấy
-        uploaded_file = st.file_uploader(
-            "📸 Tải ảnh", 
-            type=["png", "jpg", "jpeg"],
-            key="file_uploader_key",
-            label_visibility="collapsed"
-        )
-        
         # Tạo Nút Giả (dấu '+') bằng HTML/Markdown
-        # Ta cần dùng ID của input file thực tế để JS kích hoạt
+        # Nút này dùng JavaScript để kích hoạt File Uploader ẩn
         st.markdown("""
         <label for="file_uploader_key-input" class="custom-upload-button">
             +
         </label>
         <script>
-            // Lấy nút '+' giả
-            const customButton = document.querySelector('.custom-upload-button');
-            // Lấy nút 'Browse files' thật của st.file_uploader bằng ID (do Streamlit tạo)
-            const realInput = document.querySelector('[data-testid="stFileUploaderDropzone"] input[type="file"]');
-            
-            if (customButton && realInput) {
-                customButton.addEventListener('click', () => {
-                    // Kích hoạt click vào input file thật
-                    realInput.click();
-                });
-            }
+            // HÀM JS ĐỂ KÍCH HOẠT UPLOADER
+            (function() {
+                // Lấy nút '+' giả
+                const customButton = document.querySelector('.custom-upload-button');
+                // Lấy input file thật (nằm trong stFileUploaderDropzone)
+                const realInput = document.querySelector('[data-testid="stFileUploaderDropzone"] input[type="file"]');
+                
+                if (customButton && realInput) {
+                    customButton.addEventListener('click', (e) => {
+                        e.preventDefault(); // Ngăn chặn form submit ngay lập tức
+                        realInput.click(); // Kích hoạt click vào input file thật
+                    });
+                }
+            })();
         </script>
         """, unsafe_allow_html=True)
-        # Lưu ý: Do Streamlit tạo ID động, đoạn JS trên đã được tối ưu để tìm input file bằng thuộc tính chung hơn.
 
     # 2. Ô nhập liệu (Text Input)
     with col_input:
@@ -254,41 +253,46 @@ with st.form(key='chat_form', clear_on_submit=True):
     # 3. Nút Gửi (Submit)
     with col_send:
         # Nút submit là bắt buộc trong form
-        st.form_submit_button("➤", disabled=(not prompt and not uploaded_file)) # Vô hiệu hóa nếu không có nội dung/ảnh
+        st.form_submit_button("➤", key="submit_button_key", disabled=(not prompt and not st.session_state.file_uploader_key)) 
 
-# Xử lý tệp đã tải lên
+
+# Xử lý tệp đã tải lên (Lưu vào session state để dùng cho lần gửi tiếp theo)
 image_part, image_bytes = None, None
 if 'file_uploader_key' in st.session_state and st.session_state.file_uploader_key:
-    uploaded_file = st.session_state.file_uploader_key
-    image_bytes = uploaded_file.read()
-    image_part = types.Part.from_bytes(data=image_bytes, mime_type=uploaded_file.type)
-    st.sidebar.image(image_bytes, caption='Ảnh bài tập đã tải', width=250)
-    st.toast("✅ Ảnh đã tải thành công!", icon='📸')
+    # Lấy file từ session state sau khi uploader được dùng
+    uploaded_file_data = st.session_state.file_uploader_key
+    image_bytes = uploaded_file_data.read()
+    image_part = types.Part.from_bytes(data=image_bytes, mime_type=uploaded_file_data.type)
+    # Hiển thị ảnh trong sidebar (tùy chọn)
+    # st.sidebar.image(image_bytes, caption='Ảnh bài tập đã tải', width=250)
+
 
 # ==================== XỬ LÝ CHAT SAU KHI FORM SUBMIT ====================
-# Kiểm tra nếu form đã được submit và có prompt hoặc ảnh
-if prompt or uploaded_file:
-    contents = [prompt if prompt else ""] # Gửi prompt trống nếu chỉ có ảnh
-    if image_part:
+# Kiểm tra nếu form đã được submit
+if st.session_state.submit_button_key:
+    # Lấy prompt từ session state
+    current_prompt = st.session_state.text_input_main
+    
+    # Tạo contents
+    contents = [current_prompt if current_prompt else ""]
+    is_image_attached = image_part is not None
+    
+    if is_image_attached:
         contents.insert(0, image_part)
         
     # HIỂN THỊ TIN NHẮN CỦA HỌC SINH
     with st.chat_message("Học sinh"):
-        if image_part:
+        if is_image_attached:
             st.markdown(f"<span class='chat-icon'>👩‍🎓</span>**Bài tập đính kèm:**", unsafe_allow_html=True)
             st.image(image_bytes, width=180)
-        st.markdown(prompt if prompt else "(Chỉ gửi ảnh)")
+        st.markdown(current_prompt if current_prompt else "(Chỉ gửi ảnh)")
 
     # GỬI TỚI GEMINI
-    with st.spinner("⏳ Thầy Chánh đang suy nghĩ..."):
-        # Cần kiểm tra xem có nội dung gửi đi không
-        if prompt or image_part:
+    if current_prompt or is_image_attached:
+        with st.spinner("⏳ Thầy Chánh đang suy nghĩ..."):
             response = st.session_state.chat_session.send_message(contents)
-        else:
-            response = None # Không gửi gì nếu form submit mà không có prompt hay ảnh
 
-    # HIỂN THỊ PHẢN HỒI CỦA THẦY CHÁNH
-    if response:
+        # HIỂN THỊ PHẢN HỒI CỦA THẦY CHÁNH
         with st.chat_message("Thầy Chánh"):
             placeholder = st.empty()
             text_display = ""
@@ -297,6 +301,13 @@ if prompt or uploaded_file:
                 placeholder.markdown(f"<span class='chat-icon'>🤖</span>{text_display}", unsafe_allow_html=True)
                 time.sleep(0.008)
             st.session_state.last_response = response.text
+            
+    # Xóa file uploader sau khi gửi tin nhắn thành công để không gửi lại
+    if 'file_uploader_key' in st.session_state:
+        st.session_state.file_uploader_key = None 
+        # Cần chạy lại script để cập nhật giao diện
+        st.experimental_rerun()
+
 
 # ==================== 🧾 FOOTER ====================
 st.markdown("""
