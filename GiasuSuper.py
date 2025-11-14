@@ -4,22 +4,22 @@ import time
 from google import genai
 from google.genai import types
 
-# ==================== 🎨 CSS TÙY CHỈNH GIAO DIỆN CHUYÊN NGHIỆP ====================
+# ==================== 🎨 CSS TÙY CHỈNH GIAO DIỆN CHUYÊN NGHIỆP VÀ TỐI GIẢN ====================
 st.markdown("""
 <style>
 /* ----------- Tổng thể ----------- */
 [data-testid="stAppViewContainer"] {
-    /* Nền gradient nhẹ nhàng, chuyên nghiệp */
-    background: linear-gradient(135deg, #ffffff 0%, #f7f9fc 100%);
-    font-family: 'Inter', 'Segoe UI', sans-serif; /* Font hiện đại hơn */
-    color: #333333; /* Màu chữ chính */
+    /* Nền hoàn toàn trắng (tối giản, chuyên nghiệp nhất) */
+    background-color: #ffffff; 
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: #333333;
 }
 
 /* ----------- Tiêu đề ----------- */
 h1 {
-    color: #004080; /* Màu xanh đậm, uy tín */
+    color: #003366; /* Xanh Navy đậm, uy tín */
     text-align: center;
-    font-weight: 800; /* Đậm hơn để nổi bật */
+    font-weight: 800; 
     margin-bottom: 0.2em;
     padding-top: 10px;
 }
@@ -32,65 +32,69 @@ h1 {
 
 /* ----------- Đường ngăn cách ----------- */
 hr {
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid #eeeeee; /* Đường kẻ rất mỏng và nhạt */
     margin: 1.5rem 0;
+}
+st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để được hướng dẫn chi tiết:**") {
+    font-weight: 600;
+    color: #004080;
 }
 
 /* ----------- Hộp chat ----------- */
 .stChatMessage {
-    border-radius: 18px; /* Bo góc mềm mại hơn */
-    padding: 12px 20px;
+    border-radius: 12px; /* Góc bo vừa phải */
+    padding: 12px 18px;
     margin: 10px 0;
     line-height: 1.6;
     font-size: 1.0em;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Đổ bóng tinh tế */
-    transition: all 0.3s ease;
+    box-shadow: none; /* Bỏ bóng để tối giản */
+    border: 1px solid #f0f0f0; /* Thêm border nhẹ thay cho bóng */
 }
-/* Tin nhắn Học sinh (User) */
+/* Tin nhắn Học sinh (User) - Nền trắng, chữ đen, nổi bật bên phải */
 .stChatMessage[data-testid="stChatMessageUser"] {
-    background-color: #e6f7ff; /* Xanh nhạt tinh tế */
-    border: none; /* Bỏ border để tối giản */
-    color: #003366;
-    margin-left: 20%; /* Dịch sang phải */
+    background-color: #ffffff; 
+    color: #222222;
+    margin-left: 20%; 
+    border-left: 3px solid #007bff; /* Thanh màu xanh nổi bật */
 }
-/* Tin nhắn Thầy Chánh (Assistant) */
+/* Tin nhắn Thầy Chánh (Assistant) - Nền xám nhạt, chữ đen, nổi bật bên trái */
 .stChatMessage[data-testid="stChatMessageAssistant"] {
-    background-color: #ffffff; /* Trắng sạch sẽ */
-    border: 1px solid #e0e0e0;
+    background-color: #f7f7f7; /* Nền xám nhạt */
     color: #333333;
-    margin-right: 20%; /* Dịch sang trái */
+    margin-right: 20%; 
+    border-left: 3px solid #0056b3; /* Thanh màu xanh đậm hơn */
 }
 
 /* ----------- Biểu tượng chat ----------- */
 .chat-icon {
     font-size: 20px;
     margin-right: 8px;
-    vertical-align: top; /* Căn chỉnh biểu tượng */
+    vertical-align: top; 
 }
 
 /* ----------- File upload ----------- */
 .stFileUploader {
-    border: 3px dashed #b3d9ff; /* Màu xanh dịu */
-    border-radius: 15px;
-    background-color: #f0f8ff; /* Nền xanh rất nhạt */
+    border: 2px dashed #cccccc; /* Border xám trung tính */
+    border-radius: 12px;
+    background-color: #fcfcfc; 
     padding: 15px;
     margin-bottom: 20px;
 }
 .stFileUploader:hover {
-    background-color: #e3f2ff;
-    border-color: #80bfff;
+    background-color: #f9f9f9;
+    border-color: #aaaaaa;
 }
 
 /* ----------- Thanh nhập chat ----------- */
 [data-testid="stChatInput"] {
     background-color: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 -4px 15px rgba(0,0,0,0.08); /* Bóng rõ hơn */
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.05); /* Bóng nhẹ dưới cùng */
     padding: 10px;
 }
 /* Nút Gửi */
 [data-testid="stChatInput"] button {
-    background-color: #0066cc; /* Màu xanh dương chủ đạo */
+    background-color: #0066cc; 
     border-radius: 8px;
 }
 [data-testid="stChatInput"] button:hover {
@@ -103,15 +107,15 @@ hr {
     font-weight: 700;
 }
 
-/* ----------- Footer (Giữ nguyên phong cách chuyên nghiệp, thay màu hiện đại hơn) ----------- */
+/* ----------- Footer ----------- */
 footer {visibility: hidden;}
 .custom-footer-container {
     position: fixed;
     bottom: 0px;
     left: 0;
     width: 100%;
-    /* Gradient footer tông xanh-xám chuyên nghiệp */
-    background: linear-gradient(90deg, #004d99, #0066cc, #004d99);
+    /* Màu xanh đậm đơn sắc cho sự ổn định */
+    background-color: #004d99; 
     padding: 8px 0;
     text-align: center;
     font-size: 0.85em;
@@ -141,7 +145,8 @@ client = get_gemini_client()
 # ==================== 💬 KHỞI TẠO PHIÊN CHAT ====================
 if "chat_session" not in st.session_state:
     config = types.GenerateContentConfig(
-        system_instruction="Bạn là Gia Sư AI THCS thân thiện, giúp học sinh lớp 6–9 học tất cả các môn. Giải thích dễ hiểu, có ví dụ cụ thể.",
+        # Đã sửa: Thêm hướng dẫn để AI luôn xưng là 'Thầy'
+        system_instruction="Bạn là Thầy Chánh - Gia Sư AI THCS thân thiện, giúp học sinh lớp 6–9 học tất cả các môn. Bạn phải luôn xưng là 'Thầy' hoặc 'Thầy Chánh' khi giao tiếp. Giải thích dễ hiểu, có ví dụ cụ thể.",
         temperature=1
     )
     st.session_state.chat_session = client.chats.create(
