@@ -3,6 +3,7 @@ import os
 import time
 from google import genai
 from google.genai import types
+import streamlit.components.v1 as components # 👈 ĐÃ THÊM: Import component để chèn HTML an toàn
 
 # ==================== 🎨 CSS TÙY CHỈNH GIAO DIỆN CHUYÊN NGHIỆP VÀ TỐI GIẢN ====================
 st.markdown("""
@@ -132,9 +133,10 @@ footer {visibility: hidden;}
     z-index: 1000000; /* Đảm bảo nút luôn nằm trên cùng */
 }
 
-/* Sửa lỗi: Thêm style cho div.home-button-trigger để nó hiển thị như thẻ <a> */
-.home-button-container .home-button-trigger { 
-    /* Copy các style từ .home-button-container a */
+/* Sửa lỗi: Đã loại bỏ .home-button-trigger vì không dùng st.markdown nữa. */
+
+/* Giữ lại style cũ của thẻ a (cho trường hợp dùng components.html có thẻ <a>) */
+.home-button-container a {
     text-decoration: none;
     display: inline-block;
     background-color: #007bff; /* Màu xanh nổi bật */
@@ -144,15 +146,23 @@ footer {visibility: hidden;}
     font-weight: 600;
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
     transition: background-color 0.3s, transform 0.2s;
-    /* Thêm con trỏ chuột dạng nút bấm */
-    cursor: pointer; 
 }
-.home-button-container .home-button-trigger:hover {
+.home-button-container a:hover {
     background-color: #0056b3;
     transform: translateY(-2px);
 }
-.home-button-container .home-button-trigger:active {
+.home-button-container a:active {
     transform: translateY(0);
+}
+
+/* 👈 ĐÃ THÊM: Sửa lỗi cố định vị trí của components.html */
+/* Streamlit sẽ bọc components.html trong div có data-testid="stHtml" */
+[data-testid="stHtml"] { 
+    position: fixed !important;
+    bottom: 50px !important; 
+    right: 0px !important;
+    z-index: 1000000 !important;
+    padding: 0 !important; /* Loại bỏ padding mặc định */
 }
 </style>
 """, unsafe_allow_html=True)
@@ -200,16 +210,39 @@ if uploaded_file:
     st.sidebar.image(image_bytes, caption='Ảnh bài tập đã tải', width=250)
     st.success("✅ Ảnh đã tải thành công!")
 
-# ==================== NÚT VỀ TRANG CHỦ CỐ ĐỊNH SÁT DƯỚI (Dùng JS để ép chuyển hướng) ====================
-st.markdown("""
-<div class="home-button-container">
-    <div class="home-button-trigger" onclick="window.open('https://dayhoctichcuc.netlify.app/', '_top');">
+# ==================== NÚT VỀ TRANG CHỦ CỐ ĐỊNH SÁT DƯỚI (Sử dụng components.html để hoạt động chắc chắn) ====================
+components.html(
+    """
+    <style>
+        /* CSS cục bộ cho nút (để đảm bảo kiểu dáng) */
+        .home-button-link {
+            text-decoration: none;
+            display: block; 
+            background-color: #007bff; 
+            color: white;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+            transition: background-color 0.3s, transform 0.2s;
+            text-align: center;
+        }
+        .home-button-link:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .home-button-link:active {
+            transform: translateY(0);
+        }
+    </style>
+    <a href="https://dayhoctichcuc.netlify.app/" target="_top" class="home-button-link">
         🏠 Về trang chủ
-    </div>
-</div>
-""", unsafe_allow_html=True) 
-# Sửa lỗi: Dùng window.open với target '_top' để ép trình duyệt mở trang mới 
-# ở cửa sổ cấp cao nhất (thoát khỏi Streamlit iframe/context).
+    </a>
+    """,
+    # Chiều cao và chiều rộng để chứa nút
+    height=45,
+    width=165, 
+)
 
 st.markdown("---")
 
@@ -242,7 +275,7 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
         text_display = ""
         for char in response.text:
             text_display += char
-            placeholder.markdown(f"<span class='chat-icon'>🤖</span>{text_display}", unsafe_allow_html=True)
+            placeholder.markdown(f"<span class='chat-icon'>🤖}</span>{text_display}", unsafe_allow_html=True)
             time.sleep(0.008)  # tốc độ gõ (nhanh hơn một chút)
         st.session_state.last_response = response.text
 
@@ -252,10 +285,3 @@ st.markdown("""
     © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng
 </div>
 """, unsafe_allow_html=True)
-
-
-
-
-
-
-
