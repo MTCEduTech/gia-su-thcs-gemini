@@ -131,6 +131,32 @@ footer {visibility: hidden;}
     right: 0px;
     z-index: 1000000; /* Đảm bảo nút luôn nằm trên cùng */
 }
+
+/* Sửa lỗi: Thêm style cho div.home-button-trigger để nó hiển thị như thẻ <a> */
+.home-button-container .home-button-trigger { 
+    /* Copy các style từ .home-button-container a */
+    text-decoration: none;
+    display: inline-block;
+    background-color: #007bff; /* Màu xanh nổi bật */
+    color: white;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+    transition: background-color 0.3s, transform 0.2s;
+    /* Thêm con trỏ chuột dạng nút bấm */
+    cursor: pointer; 
+}
+.home-button-container .home-button-trigger:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+.home-button-container .home-button-trigger:active {
+    transform: translateY(0);
+}
+
+/* Giữ lại style cũ của thẻ a (để hỗ trợ nếu bạn muốn dùng <a>) */
+/* (Phần này là style cũ, có thể giữ lại hoặc xóa nếu chỉ dùng JS) */
 .home-button-container a {
     text-decoration: none;
     display: inline-block;
@@ -194,15 +220,19 @@ if uploaded_file:
     image_part = types.Part.from_bytes(data=image_bytes, mime_type=uploaded_file.type)
     st.sidebar.image(image_bytes, caption='Ảnh bài tập đã tải', width=250)
     st.success("✅ Ảnh đã tải thành công!")
-    
-    # ==================== NÚT VỀ TRANG CHỦ CỐ ĐỊNH SÁT DƯỚI ====================
+
+# ==================== NÚT VỀ TRANG CHỦ CỐ ĐỊNH SÁT DƯỚI (Dùng JS để ép chuyển hướng) ====================
 st.markdown("""
 <div class="home-button-container">
-    <a href="https://dayhoctichcuc.netlify.app/" target="_top">
+    <div class="home-button-trigger" onclick="window.open('https://dayhoctichcuc.netlify.app/', '_top');">
         🏠 Về trang chủ
-    </a>
+    </div>
 </div>
-""", unsafe_allow_html=True)
+""", unsafe_allow_html=True) 
+# Sửa lỗi: Dùng window.open với target '_top' để ép trình duyệt mở trang mới 
+# ở cửa sổ cấp cao nhất (thoát khỏi Streamlit iframe/context).
+
+st.markdown("---")
 
 # ==================== 🕐 HIỂN THỊ LỊCH SỬ CHAT ====================
 for msg in st.session_state.chat_session.get_history():
@@ -243,6 +273,7 @@ st.markdown("""
     © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
