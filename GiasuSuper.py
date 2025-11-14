@@ -179,16 +179,7 @@ if "chat_session" not in st.session_state:
         model="gemini-2.5-flash",
         config=config
     )
-# NÚT VỀ TRANG CHỦ CỐ ĐỊNH SÁT DƯỚI (Dùng JS để ép chuyển hướng)
-st.markdown("""
-<div class="home-button-container">
-    <div class="home-button-trigger" onclick="window.top.location.href = 'https://dayhoctichcuc.netlify.app/';">
-        🏠 Về trang chủ
-    </div>
-</div>
-""", unsafe_allow_html=True) # Dùng window.top.location.href để ép chuyển hướng toàn bộ cửa sổ
 
-st.markdown("---")
 # ==================== 🧠 GIAO DIỆN NGƯỜI DÙNG ====================
 st.title("🎓 Trợ lý AI - Hỗ trợ Học Tập - Thầy Chánh")
 st.caption("Xin chào 👋 Tôi là **Trợ lý AI do thầy Mai Thiện Chánh tạo ra** – Hãy gửi câu hỏi hoặc hình bài tập, tôi sẽ giúp bạn học thật hiệu quả!")
@@ -203,6 +194,17 @@ if uploaded_file:
     image_part = types.Part.from_bytes(data=image_bytes, mime_type=uploaded_file.type)
     st.sidebar.image(image_bytes, caption='Ảnh bài tập đã tải', width=250)
     st.success("✅ Ảnh đã tải thành công!")
+    
+    # ==================== NÚT VỀ TRANG CHỦ CỐ ĐỊNH SÁT DƯỚI (Dùng JS để ép chuyển hướng) ====================
+st.markdown("""
+<div class="home-button-container">
+    <div class="home-button-trigger" onclick="window.top.location.href = 'https://dayhoctichcuc.netlify.app/';">
+        🏠 Về trang chủ
+    </div>
+</div>
+""", unsafe_allow_html=True) # Dùng window.top.location.href để ép chuyển hướng toàn bộ cửa sổ
+
+st.markdown("---")
 
 # ==================== 🕐 HIỂN THỊ LỊCH SỬ CHAT ====================
 for msg in st.session_state.chat_session.get_history():
@@ -243,6 +245,7 @@ st.markdown("""
     © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
