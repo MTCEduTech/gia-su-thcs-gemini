@@ -269,13 +269,14 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
     with st.spinner("⏳ Thầy Chánh đang suy nghĩ..."):
         response = st.session_state.chat_session.send_message(contents)
 
-    # Hiệu ứng “gõ chữ dần dần”
+# Hiệu ứng “gõ chữ dần dần”
     with st.chat_message("Thầy Chánh"):
         placeholder = st.empty()
         text_display = ""
         for char in response.text:
             text_display += char
-            placeholder.markdown(f"<span class='chat-icon'>🤖}</span>{text_display}", unsafe_allow_html=True)
+            # ĐÃ SỬA: Xóa dấu '}' thừa
+            placeholder.markdown(f"<span class='chat-icon'>🤖</span>{text_display}", unsafe_allow_html=True) 
             time.sleep(0.008)  # tốc độ gõ (nhanh hơn một chút)
         st.session_state.last_response = response.text
 
@@ -285,3 +286,4 @@ st.markdown("""
     © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng
 </div>
 """, unsafe_allow_html=True)
+
