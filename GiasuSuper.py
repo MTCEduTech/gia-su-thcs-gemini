@@ -155,15 +155,6 @@ footer {visibility: hidden;}
     transform: translateY(0);
 }
 
-/* 👈 ĐÃ THÊM: Sửa lỗi cố định vị trí của components.html */
-/* Streamlit sẽ bọc components.html trong div có data-testid="stHtml" */
-[data-testid="stHtml"] { 
-    position: fixed !important;
-    bottom: 50px !important; 
-    right: 0px !important;
-    z-index: 1000000 !important;
-    padding: 0 !important; /* Loại bỏ padding mặc định */
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -214,7 +205,14 @@ if uploaded_file:
 components.html(
     """
     <style>
-        /* CSS cục bộ cho nút (để đảm bảo kiểu dáng) */
+        /* CSS Cố Định Vị Trí VÀ Kiểu Dáng Nút */
+        .home-button-container-fixed {
+            /* 👈 Đã thêm: Định vị trí cố định cho toàn bộ nội dung trong iframe của component */
+            position: fixed;
+            bottom: 50px;
+            right: 0px;
+            z-index: 1000001; 
+        }
         .home-button-link {
             text-decoration: none;
             display: block; 
@@ -235,17 +233,18 @@ components.html(
             transform: translateY(0);
         }
     </style>
-    <a href="https://dayhoctichcuc.netlify.app/" target="_top" class="home-button-link">
-        🏠 Về trang chủ
-    </a>
+    <div class="home-button-container-fixed">
+        <a href="https://dayhoctichcuc.netlify.app/" target="_top" class="home-button-link">
+            🏠 Về trang chủ
+        </a>
+    </div>
     """,
-    # Chiều cao và chiều rộng để chứa nút
-    height=45,
-    width=165, 
+    # Đặt chiều cao/rộng tối thiểu, vị trí cố định sẽ không bị ảnh hưởng bởi tham số này
+    height=100,
+    width=200, 
 )
 
-st.markdown("---")
-
+st.markdown("---") # Giữ nguyên đường ngăn cách
 # ==================== 🕐 HIỂN THỊ LỊCH SỬ CHAT ====================
 for msg in st.session_state.chat_session.get_history():
     role = "Thầy Chánh" if msg.role == "model" else "Học sinh"
@@ -286,4 +285,5 @@ st.markdown("""
     © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng
 </div>
 """, unsafe_allow_html=True)
+
 
