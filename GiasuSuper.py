@@ -205,14 +205,46 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
             time.sleep(0.008)  # tốc độ gõ (nhanh hơn một chút)
         st.session_state.last_response = response.text
 
-# ==================== 🧾 FOOTER ====================
-st.markdown("""
-<div class="custom-footer-container">
-    © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng || <a href="https://dayhoctichcuc.netlify.app/" target="_blank" class="home-button-link" style="color: white; text-decoration: none;">
-            🏠 Về trang chủ
-        </a>
-</div>
-""", unsafe_allow_html=True)
+# ==================== 🧾 FOOTER (Dùng JS để điều hướng) ====================
+# Đặt đoạn mã này vào cuối file của bạn
+components.html(
+    """
+    <style>
+    .custom-footer-container {
+        position: fixed;
+        bottom: 0px;
+        left: 0;
+        width: 100%;
+        background-color: #004d99; 
+        padding: 8px 0;
+        text-align: center;
+        font-size: 0.85em;
+        color: white;
+        z-index: 999999;
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+        font-family: 'Inter', 'Segoe UI', sans-serif; /* Đảm bảo font khớp */
+    }
+    /* Style cho nút bấm/liên kết */
+    .home-button-link {
+        color: white !important;
+        text-decoration: none;
+        cursor: pointer;
+        font-weight: 600;
+        margin-left: 5px;
+    }
+    .home-button-link:hover {
+        text-decoration: underline;
+    }
+    </style>
 
+    <div class="custom-footer-container">
+        © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng || 
+        <span class="home-button-link" onclick="window.top.location.replace('https://dayhoctichcuc.netlify.app/');">
+            🏠 Về trang chủ
+        </span>
+    </div>
+    """,
+    height=40  # Chiều cao phù hợp với footer
+)
 
 
