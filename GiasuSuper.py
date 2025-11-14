@@ -4,7 +4,7 @@ import time
 from google import genai
 from google.genai import types
 
-# ==================== 🎨 CSS TÙY CHỈNH GIAO DIỆN CHUYÊN NGHIỆP VÀ TỐI GIẢN ====================
+# ==================== 🎨 CSS TÙY CHỈNH GIAO DIỆN MỚI ====================
 st.markdown("""
 <style>
 /* ----------- Tổng thể ----------- */
@@ -35,20 +35,20 @@ hr {
     border-top: 1px solid #eeeeee; /* Đường kẻ rất mỏng và nhạt */
     margin: 1.5rem 0;
 }
+/* Ẩn tiêu đề hướng dẫn tải ảnh cũ */
 st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để được hướng dẫn chi tiết:**") {
-    font-weight: 600;
-    color: #004080;
+    display: none;
 }
 
 /* ----------- Hộp chat ----------- */
 .stChatMessage {
-    border-radius: 12px; /* Góc bo vừa phải */
+    border-radius: 12px; 
     padding: 12px 18px;
     margin: 10px 0;
     line-height: 1.6;
     font-size: 1.0em;
-    box-shadow: none; /* Bỏ bóng để tối giản */
-    border: 1px solid #f0f0f0; /* Thêm border nhẹ thay cho bóng */
+    box-shadow: none; 
+    border: 1px solid #f0f0f0; 
 }
 /* Tin nhắn Học sinh (User) - Nền trắng, chữ đen, nổi bật bên phải */
 .stChatMessage[data-testid="stChatMessageUser"] {
@@ -62,7 +62,7 @@ st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để đư�
     background-color: #f7f7f7; /* Nền xám nhạt */
     color: #333333;
     margin-right: 20%; 
-    border-left: 3px solid #0056b3; /* Thanh màu xanh đậm hơn */
+    border-left: 3px solid #0056b3; 
 }
 
 /* ----------- Biểu tượng chat ----------- */
@@ -72,94 +72,74 @@ st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để đư�
     vertical-align: top; 
 }
 
-/* ----------- File upload Tối giản (giả lập nút +) ----------- */
-.stFileUploader {
-    border: none; /* Bỏ border */
-    border-radius: 12px;
-    background-color: transparent; /* Nền trong suốt */
-    padding: 0;
-    margin: 5px 0 10px 10px; /* Định vị gần chat input */
-    width: 250px; /* Giới hạn chiều rộng để không quá lớn */
-}
-/* Ẩn vùng kéo thả lớn mặc định, chỉ giữ lại nút Browse files */
-.stFileUploader > div > div:first-child {
-    display: none; 
-}
-/* Tạo nút tải tệp nổi bật (giả lập dấu +) */
-.stFileUploader button {
-    background-color: #007bff; /* Màu xanh nổi bật */
-    color: white;
-    font-size: 16px;
-    font-weight: 700;
-    border-radius: 8px; /* Bo góc mềm mại */
-    padding: 8px 15px;
-    transition: background-color 0.3s;
-    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4); /* Thêm bóng cho nút */
-}
-.stFileUploader button:hover {
-    background-color: #0056b3;
-}
-/* Tùy chỉnh chữ trên nút */
-.stFileUploader button span {
-    visibility: hidden; /* Ẩn chữ "Browse files" mặc định */
-}
-/* Thay thế bằng dấu cộng */
-.stFileUploader button:after {
-    content: "➕ Đính kèm ảnh"; /* Thay thế bằng nội dung dễ hiểu */
-    visibility: visible;
-}
-
-
-/* ----------- Thanh nhập chat ----------- */
-[data-testid="stChatInput"] {
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 -4px 15px rgba(0,0,0,0.05); /* Bóng nhẹ dưới cùng */
-    padding: 10px;
-}
-/* Nút Gửi */
-[data-testid="stChatInput"] button {
-    background-color: #0066cc; 
-    border-radius: 8px;
-}
-[data-testid="stChatInput"] button:hover {
-    background-color: #005bb5;
-}
-
-/* ----------- Spinner ----------- */
-.stSpinner > div {
-    color: #0066cc;
-    font-weight: 700;
-}
-
-/* ----------- Footer ----------- */
-footer {visibility: hidden;}
-.custom-footer-container {
+/* ==================== VÙNG CHAT INPUT CỐ ĐỊNH ==================== */
+/* Cố định container chứa chat input và file uploader */
+.fixed-chat-container {
     position: fixed;
-    bottom: 0px;
+    bottom: 50px; /* Nằm ngay trên footer */
     left: 0;
     width: 100%;
-    /* Màu xanh đậm đơn sắc cho sự ổn định */
-    background-color: #004d99; 
-    padding: 8px 0;
-    text-align: center;
-    font-size: 0.85em;
+    background-color: #ffffff;
+    padding: 10px 15px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05); 
+    z-index: 9999;
+}
+/* Điều chỉnh khoảng cách cuộn cho nội dung chính để tránh bị che */
+[data-testid="stVerticalBlock"] {
+    padding-bottom: 120px; /* Đảm bảo lịch sử chat luôn hiển thị trên thanh input */
+}
+
+/* ----------- Tùy chỉnh NÚT ĐÍNH KÈM (+) ----------- */
+/* Ẩn toàn bộ File Uploader mặc định */
+.stFileUploader {
+    display: none; 
+}
+/* Tạo nút '+' lớn */
+.custom-upload-button {
+    background-color: #007bff; 
+    border: none;
     color: white;
-    z-index: 999999;
-    box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+    font-size: 24px;
+    font-weight: 700;
+    border-radius: 50%; /* Hình tròn */
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4);
+    transition: background-color 0.2s;
+    /* Căn chỉnh vào giữa */
+    margin-top: 10px; 
+}
+.custom-upload-button:hover {
+    background-color: #0056b3;
+}
+
+/* Tùy chỉnh chat input để hòa hợp */
+[data-testid="stChatInput"] {
+    background-color: #f0f0f0; /* Màu nền xám nhạt */
+    border-radius: 12px;
+    box-shadow: none; 
+    padding: 5px;
+    margin: 5px 0 5px 0;
+}
+/* Bỏ padding dưới cùng của container chat input */
+[data-testid="stChatInput"] > div:last-child {
+    padding-bottom: 0px;
 }
 
 /* ----------- NÚT VỀ TRANG CHỦ CỐ ĐỊNH (Home Button) ----------- */
 .home-button-container {
     position: fixed;
-    bottom: 80px; /* Đặt phía trên Footer và nút Manage app */
+    bottom: 100px; /* Đặt phía trên fixed-chat-container */
     right: 20px;
-    z-index: 1000000; /* Đảm bảo nút luôn nằm trên cùng */
+    z-index: 1000000; 
 }
 .home-button-container a {
     text-decoration: none;
     display: inline-block;
-    background-color: #007bff; /* Màu xanh nổi bật */
+    background-color: #007bff; 
     color: white;
     padding: 10px 18px;
     border-radius: 12px;
@@ -173,6 +153,27 @@ footer {visibility: hidden;}
 }
 .home-button-container a:active {
     transform: translateY(0);
+}
+
+
+/* ----------- Spinner & Footer giữ nguyên ----------- */
+.stSpinner > div {
+    color: #0066cc;
+    font-weight: 700;
+}
+footer {visibility: hidden;}
+.custom-footer-container {
+    position: fixed;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    background-color: #004d99; 
+    padding: 8px 0;
+    text-align: center;
+    font-size: 0.85em;
+    color: white;
+    z-index: 999999;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -196,7 +197,6 @@ client = get_gemini_client()
 # ==================== 💬 KHỞI TẠO PHIÊN CHAT ====================
 if "chat_session" not in st.session_state:
     config = types.GenerateContentConfig(
-        # Đã sửa: Thêm hướng dẫn để AI luôn xưng là 'Thầy'
         system_instruction="Bạn là Thầy Chánh - Gia Sư AI THCS thân thiện, giúp học sinh lớp 6–9 học tất cả các môn. Bạn phải luôn xưng là 'Thầy' hoặc 'Thầy Chánh' khi giao tiếp. Giải thích dễ hiểu, có ví dụ cụ thể.",
         temperature=1
     )
@@ -204,7 +204,12 @@ if "chat_session" not in st.session_state:
         model="gemini-2.5-flash",
         config=config
     )
-    
+
+# ==================== 🧠 GIAO DIỆN NGƯỜI DÙNG ====================
+st.title("🎓 Trợ lý AI - Hỗ trợ Học Tập - Thầy Chánh")
+st.caption("Xin chào 👋 Tôi là **Trợ lý AI do thầy Mai Thiện Chánh tạo ra** – Hãy gửi câu hỏi hoặc hình bài tập, tôi sẽ giúp bạn học thật hiệu quả!")
+
+# NÚT VỀ TRANG CHỦ CỐ ĐỊNH
 st.markdown("""
 <div class="home-button-container">
     <a href="https://dayhoctichcuc.netlify.app/" target="_self">
@@ -213,13 +218,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ==================== 🧠 GIAO DIỆN NGƯỜI DÙNG ====================
-st.title("🎓 Trợ lý AI - Hỗ trợ Học Tập - Thầy Chánh")
-st.caption("Xin chào 👋 Tôi là **Trợ lý AI do thầy Mai Thiện Chánh tạo ra** – Hãy gửi câu hỏi hoặc hình bài tập, tôi sẽ giúp bạn học thật hiệu quả!")
-
 st.markdown("---")
-# ĐÃ BỎ st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để được hướng dẫn chi tiết:**") Ở ĐÂY
-# VÌ CHÚNG TA ĐÃ DI CHUYỂN UPLOADER XUỐNG DƯỚI
 
 # ==================== 🕐 HIỂN THỊ LỊCH SỬ CHAT ====================
 for msg in st.session_state.chat_session.get_history():
@@ -228,23 +227,61 @@ for msg in st.session_state.chat_session.get_history():
     with st.chat_message(role):
         st.markdown(f"<span class='chat-icon'>{icon}</span>{msg.parts[0].text}", unsafe_allow_html=True)
 
-# ==================== 📸 KHU VỰC TẢI ẢNH CỐ ĐỊNH (Tối giản) ====================
-# Đặt File Uploader ở cuối nội dung chính để nó nằm ngay trên Chat Input
-uploaded_file = st.file_uploader(
-    "📸 Đính kèm ảnh bài tập", # Label được ẩn bằng CSS
-    type=["png", "jpg", "jpeg"],
-    label_visibility="collapsed" # Ẩn label mặc định
-)
+# ==================== VÙNG CHAT INPUT VÀ FILE UPLOADER CỐ ĐỊNH ====================
+# Bọc cả hai trong một container cố định (fixed-chat-container)
+st.markdown('<div class="fixed-chat-container">', unsafe_allow_html=True)
+
+# Sử dụng st.columns để đặt nút (+) và ô nhập liệu cạnh nhau
+col_upload, col_input = st.columns([1, 10])
+
+with col_upload:
+    # 1. Widget File Uploader THẬT (được ẩn bằng CSS)
+    # Đây là widget được kích hoạt khi click vào nút giả (dấu '+')
+    uploaded_file = st.file_uploader(
+        "📸 Tải ảnh", 
+        type=["png", "jpg", "jpeg"],
+        key="file_uploader_key",
+        label_visibility="collapsed"
+    )
+    # 2. Tạo Nút Giả (dấu '+') bằng HTML/Markdown
+    # Nút này dùng JavaScript để click vào File Uploader thật
+    st.markdown("""
+    <label for="file_uploader_key-input" class="custom-upload-button">
+        +
+    </label>
+    <script>
+        // Lấy nút '+' giả
+        const customButton = document.querySelector('.custom-upload-button');
+        // Lấy nút 'Browse files' thật của st.file_uploader
+        // Streamlit gán ID dựa trên key, ta cần tìm ID/tên class chính xác
+        const realInput = document.getElementById('file_uploader_key-input');
+        
+        if (customButton && realInput) {
+            customButton.addEventListener('click', () => {
+                // Kích hoạt click vào input file thật
+                realInput.click();
+            });
+        }
+    </script>
+    """, unsafe_allow_html=True)
+
+# Xử lý tệp đã tải lên
 image_part, image_bytes = None, None
 if uploaded_file:
     image_bytes = uploaded_file.read()
     image_part = types.Part.from_bytes(data=image_bytes, mime_type=uploaded_file.type)
     st.sidebar.image(image_bytes, caption='Ảnh bài tập đã tải', width=250)
-    st.success("✅ Ảnh đã tải thành công!")
+    st.toast("✅ Ảnh đã tải thành công!", icon='📸')
 
 
-# ==================== ✍️ NHẬP CHAT ====================
-if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
+with col_input:
+    # Chat Input
+    prompt = st.chat_input("💬 Gõ câu hỏi của bạn tại đây...", key="chat_input_main")
+
+st.markdown('</div>', unsafe_allow_html=True) # Kết thúc fixed-chat-container
+
+# ==================== ✍️ XỬ LÝ CHAT ====================
+if prompt:
     contents = [prompt]
     if image_part:
         contents.insert(0, image_part)
@@ -266,7 +303,7 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
         for char in response.text:
             text_display += char
             placeholder.markdown(f"<span class='chat-icon'>🤖</span>{text_display}", unsafe_allow_html=True)
-            time.sleep(0.008)  # tốc độ gõ (nhanh hơn một chút)
+            time.sleep(0.008)  # tốc độ gõ 
         st.session_state.last_response = response.text
 
 # ==================== 🧾 FOOTER ====================
@@ -275,4 +312,3 @@ st.markdown("""
     © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng
 </div>
 """, unsafe_allow_html=True)
-
