@@ -72,18 +72,43 @@ st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để đư�
     vertical-align: top; 
 }
 
-/* ----------- File upload ----------- */
+/* ----------- File upload Tối giản (giả lập nút +) ----------- */
 .stFileUploader {
-    border: 2px dashed #cccccc; /* Border xám trung tính */
+    border: none; /* Bỏ border */
     border-radius: 12px;
-    background-color: #fcfcfc; 
-    padding: 15px;
-    margin-bottom: 20px;
+    background-color: transparent; /* Nền trong suốt */
+    padding: 0;
+    margin: 5px 0 10px 10px; /* Định vị gần chat input */
+    width: 250px; /* Giới hạn chiều rộng để không quá lớn */
 }
-.stFileUploader:hover {
-    background-color: #f9f9f9;
-    border-color: #aaaaaa;
+/* Ẩn vùng kéo thả lớn mặc định, chỉ giữ lại nút Browse files */
+.stFileUploader > div > div:first-child {
+    display: none; 
 }
+/* Tạo nút tải tệp nổi bật (giả lập dấu +) */
+.stFileUploader button {
+    background-color: #007bff; /* Màu xanh nổi bật */
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 8px; /* Bo góc mềm mại */
+    padding: 8px 15px;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4); /* Thêm bóng cho nút */
+}
+.stFileUploader button:hover {
+    background-color: #0056b3;
+}
+/* Tùy chỉnh chữ trên nút */
+.stFileUploader button span {
+    visibility: hidden; /* Ẩn chữ "Browse files" mặc định */
+}
+/* Thay thế bằng dấu cộng */
+.stFileUploader button:after {
+    content: "➕ Đính kèm ảnh"; /* Thay thế bằng nội dung dễ hiểu */
+    visibility: visible;
+}
+
 
 /* ----------- Thanh nhập chat ----------- */
 [data-testid="stChatInput"] {
@@ -156,18 +181,11 @@ if "chat_session" not in st.session_state:
 
 # ==================== 🧠 GIAO DIỆN NGƯỜI DÙNG ====================
 st.title("🎓 Trợ lý AI - Hỗ trợ Học Tập - Thầy Chánh")
-st.caption("Xin chào 👋 Tôi là **Trợ lý AI do thầy Mai Thiện Chánh tạo ra** – hãy gửi câu hỏi hoặc hình bài tập, tôi sẽ giúp bạn học thật hiệu quả!")
+st.caption("Xin chào 👋 Tôi là **Trợ lý AI do thầy Mai Thiện Chánh tạo ra** – Hãy gửi câu hỏi hoặc hình bài tập, tôi sẽ giúp bạn học thật hiệu quả!")
 
 st.markdown("---")
-st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để được hướng dẫn chi tiết:**")
-
-uploaded_file = st.file_uploader("📸 Tải ảnh bài tập", type=["png", "jpg", "jpeg"])
-image_part, image_bytes = None, None
-if uploaded_file:
-    image_bytes = uploaded_file.read()
-    image_part = types.Part.from_bytes(data=image_bytes, mime_type=uploaded_file.type)
-    st.sidebar.image(image_bytes, caption='Ảnh bài tập đã tải', width=250)
-    st.success("✅ Ảnh đã tải thành công!")
+# ĐÃ BỎ st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để được hướng dẫn chi tiết:**") Ở ĐÂY
+# VÌ CHÚNG TA ĐÃ DI CHUYỂN UPLOADER XUỐNG DƯỚI
 
 # ==================== 🕐 HIỂN THỊ LỊCH SỬ CHAT ====================
 for msg in st.session_state.chat_session.get_history():
@@ -175,6 +193,21 @@ for msg in st.session_state.chat_session.get_history():
     icon = "🤖" if role == "Thầy Chánh" else "👩‍🎓"
     with st.chat_message(role):
         st.markdown(f"<span class='chat-icon'>{icon}</span>{msg.parts[0].text}", unsafe_allow_html=True)
+
+# ==================== 📸 KHU VỰC TẢI ẢNH CỐ ĐỊNH (Tối giản) ====================
+# Đặt File Uploader ở cuối nội dung chính để nó nằm ngay trên Chat Input
+uploaded_file = st.file_uploader(
+    "📸 Đính kèm ảnh bài tập", # Label được ẩn bằng CSS
+    type=["png", "jpg", "jpeg"],
+    label_visibility="collapsed" # Ẩn label mặc định
+)
+image_part, image_bytes = None, None
+if uploaded_file:
+    image_bytes = uploaded_file.read()
+    image_part = types.Part.from_bytes(data=image_bytes, mime_type=uploaded_file.type)
+    st.sidebar.image(image_bytes, caption='Ảnh bài tập đã tải', width=250)
+    st.success("✅ Ảnh đã tải thành công!")
+
 
 # ==================== ✍️ NHẬP CHAT ====================
 if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
