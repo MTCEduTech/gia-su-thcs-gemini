@@ -206,14 +206,12 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
         st.session_state.last_response = response.text
 
 # ==================== 🧾 FOOTER ====================
-
 st.markdown("""
 <div class="custom-footer-container">
-© 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng || <a href="https://dayhoctichcuc.netlify.app/" target="_top" class="home-button-link">
+    © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng || <a href="https://dayhoctichcuc.netlify.app/" target="_blank" class="home-button-link" style="color: white; text-decoration: none;">
             🏠 Về trang chủ
-      </a>
- </div>
- """, unsafe_allow_html=True)
-
+        </a>
+</div>
+""", unsafe_allow_html=True)
 
 
