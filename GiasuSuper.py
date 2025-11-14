@@ -154,27 +154,6 @@ footer {visibility: hidden;}
 .home-button-container .home-button-trigger:active {
     transform: translateY(0);
 }
-
-/* Giữ lại style cũ của thẻ a (để hỗ trợ nếu bạn muốn dùng <a>) */
-/* (Phần này là style cũ, có thể giữ lại hoặc xóa nếu chỉ dùng JS) */
-.home-button-container a {
-    text-decoration: none;
-    display: inline-block;
-    background-color: #007bff; /* Màu xanh nổi bật */
-    color: white;
-    padding: 10px 18px;
-    border-radius: 12px;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
-    transition: background-color 0.3s, transform 0.2s;
-}
-.home-button-container a:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-}
-.home-button-container a:active {
-    transform: translateY(0);
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -273,6 +252,7 @@ st.markdown("""
     © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
