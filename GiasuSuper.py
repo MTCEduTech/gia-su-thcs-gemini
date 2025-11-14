@@ -61,8 +61,8 @@ hr { border-top: 1px solid #eeeeee; margin: 1.5rem 0; }
 /* ----------- NÚT VỀ TRANG CHỦ CỐ ĐỊNH SÁT DƯỚI ----------- */
 .home-button-container {
     position: fixed;
-    bottom: 0px; /* SÁT DƯỚI CÙNG */
-    right: 50px;
+    bottom: 50px; /* SÁT DƯỚI CÙNG */
+    right: 0px;
     z-index: 1000001; /* Trên cả footer */
 }
 .home-button-container a {
@@ -278,3 +278,4 @@ st.markdown("""
     © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng
 </div>
 """, unsafe_allow_html=True)
+
