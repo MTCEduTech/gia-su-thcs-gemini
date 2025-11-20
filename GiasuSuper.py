@@ -100,7 +100,7 @@ header, [data-testid="stHeader"] {
 
 /* ===================== ✏️ Ô GỬI TIN NHẮN ===================== */
 [data-testid="stChatInput"] {
-    background-color: #87CEEB;
+    background-color: white;
     border-radius: 14px;
     padding: 12px;
     border-top: 2px solid #dfe6ff;
@@ -144,17 +144,6 @@ html, body, [data-testid="stAppViewContainer"] {
     margin-right: 8px;
 }
 
-/* ⭐ ÉP KHUNG NHẬP CHAT TRÀN FULL MÀN HÌNH */
-[data-testid="stChatInput"] {
-    width: 100vw !important;       /* tràn toàn màn hình */
-    margin-left: calc(-50vw + 50%); /* kéo sát ra 2 mép */
-    margin-right: 0 !important;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-    background-color: #87CEEB !important;
-    border-radius: 0 !important;   /* nếu muốn bo tròn thì đổi lại */
-    border: none !important;
-}
 
 </style>
 
@@ -272,6 +261,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
