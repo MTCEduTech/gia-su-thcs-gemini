@@ -8,124 +8,112 @@ import streamlit.components.v1 as components # 👈 ĐÃ THÊM: Import component
 # ==================== 🎨 CSS TÙY CHỈNH GIAO DIỆN CHUYÊN NGHIỆP VÀ TỐI GIẢN ====================
 st.markdown("""
 <style>
-/* ----------- Tổng thể ----------- */
+
+/* ---------------- 🌟 BANNER ĐẦU TRANG ---------------- */
+.custom-top-banner {
+    width: 100%;
+    background: linear-gradient(90deg, #005CFF, #003EA8); /* Xanh blue nổi bật */
+    padding: 28px 0 32px 0;
+    text-align: center;
+    color: white;
+    font-weight: 800;
+    font-size: 2.1em;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.custom-top-banner-sub {
+    color: #e8e8e8;
+    margin-top: -8px;
+    font-size: 1.05em;
+    font-weight: 300;
+}
+
+
+/* ---------------- 🎨 NỀN & FONT TỔNG THỂ ---------------- */
 [data-testid="stAppViewContainer"] {
-    /* Nền hoàn toàn trắng (tối giản, chuyên nghiệp nhất) */
-    background-color: #ffffff; 
+    background-color: #f6f9ff; /* Xanh nhạt nhẹ nhàng, sang trọng */
     font-family: 'Inter', 'Segoe UI', sans-serif;
-    color: #333333;
+    color: #222;
 }
 
-/* ----------- Tiêu đề ----------- */
-h1 {
-    color: #003366; /* Xanh Navy đậm, uy tín */
-    text-align: center;
-    font-weight: 800; 
-    margin-bottom: 0.2em;
-    padding-top: 10px;
-}
-[data-testid="stCaption"] {
-    text-align: center;
-    color: #555555;
-    font-size: 1.0em;
-    font-style: italic;
+/* ---------------- 📝 TIÊU ĐỀ MỤC ---------------- */
+.section-title {
+    font-weight: 700;
+    color: #003EA8;
+    font-size: 1.25em;
+    margin-bottom: 10px;
 }
 
-/* ----------- Đường ngăn cách ----------- */
-hr {
-    border-top: 1px solid #eeeeee; /* Đường kẻ rất mỏng và nhạt */
-    margin: 1.5rem 0;
-}
-st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để được hướng dẫn chi tiết:**") {
-    font-weight: 600;
-    color: #004080;
-}
-
-/* ----------- Hộp chat ----------- */
-.stChatMessage {
-    border-radius: 12px; /* Góc bo vừa phải */
-    padding: 12px 18px;
-    margin: 10px 0;
-    line-height: 1.6;
-    font-size: 1.0em;
-    box-shadow: none; /* Bỏ bóng để tối giản */
-    border: 1px solid #f0f0f0; /* Thêm border nhẹ thay cho bóng */
-}
-/* Tin nhắn Học sinh (User) - Nền trắng, chữ đen, nổi bật bên phải */
-.stChatMessage[data-testid="stChatMessageUser"] {
-    background-color: #ffffff; 
-    color: #222222;
-    margin-left: 20%; 
-    border-left: 3px solid #007bff; /* Thanh màu xanh nổi bật */
-}
-/* Tin nhắn Thầy Chánh (Assistant) - Nền xám nhạt, chữ đen, nổi bật bên trái */
-.stChatMessage[data-testid="stChatMessageAssistant"] {
-    background-color: #f7f7f7; /* Nền xám nhạt */
-    color: #333333;
-    margin-right: 20%; 
-    border-left: 3px solid #0056b3; /* Thanh màu xanh đậm hơn */
-}
-
-/* ----------- Biểu tượng chat ----------- */
-.chat-icon {
-    font-size: 20px;
-    margin-right: 8px;
-    vertical-align: top; 
-}
-
-/* ----------- File upload ----------- */
+/* ---------------- 📦 UPLOAD FILE BOX ---------------- */
 .stFileUploader {
-    border: 2px dashed #cccccc; /* Border xám trung tính */
-    border-radius: 12px;
-    background-color: #fcfcfc; 
-    padding: 15px;
-    margin-bottom: 20px;
+    border: 2px dashed #3A6DFF;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 18px;
 }
 .stFileUploader:hover {
-    background-color: #f9f9f9;
-    border-color: #aaaaaa;
+    background: #f0f5ff;
+    border-color: #1E50FF;
 }
 
-/* ----------- Thanh nhập chat ----------- */
+/* ---------------- 💬 KHUNG CHAT ---------------- */
+.stChatMessage {
+    border-radius: 14px;
+    padding: 14px 20px;
+    line-height: 1.6;
+    font-size: 1.05em;
+    border: 1px solid #e0e6f5;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+/* User */
+.stChatMessage[data-testid="stChatMessageUser"] {
+    margin-left: 20%;
+    border-left: 4px solid #006AFF;
+}
+/* Assistant */
+.stChatMessage[data-testid="stChatMessageAssistant"] {
+    margin-right: 20%;
+    background: #f4f6ff;
+    border-left: 4px solid #274BC8;
+}
+
+/* ---------------- ✏️ Ô NHẬP CHAT ---------------- */
 [data-testid="stChatInput"] {
     background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 -4px 15px rgba(0,0,0,0.05); /* Bóng nhẹ dưới cùng */
-    padding: 10px;
+    border-radius: 14px;
+    padding: 12px;
+    border-top: 2px solid #e3e9ff;
+    box-shadow: 0 -3px 10px rgba(0,0,0,0.06);
 }
-/* Nút Gửi */
 [data-testid="stChatInput"] button {
-    background-color: #0066cc; 
+    background: #005CFF;
+    color: white !important;
     border-radius: 8px;
+    font-weight: 600;
 }
 [data-testid="stChatInput"] button:hover {
-    background-color: #005bb5;
+    background: #0048D6 !important;
 }
 
-/* ----------- Spinner ----------- */
-.stSpinner > div {
-    color: #0066cc;
-    font-weight: 700;
-}
-
-/* ----------- Footer ----------- */
+/* ---------------- 🔵 FOOTER ---------------- */
 footer {visibility: hidden;}
 .custom-footer-container {
     position: fixed;
-    bottom: 0px;
-    left: 0;
+    bottom: 0;
     width: 100%;
-    /* Màu xanh đậm đơn sắc cho sự ổn định */
-    background-color: #004d99; 
-    padding: 8px 0;
+    background: #003EA8;
+    padding: 10px 0;
     text-align: center;
-    font-size: 0.85em;
     color: white;
-    z-index: 999999;
-    box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+    font-size: 0.85em;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
+    z-index: 99999;
 }
+
 </style>
 """, unsafe_allow_html=True)
+
 
 # ==================== ⚙️ CẤU HÌNH GEMINI CLIENT ====================
 @st.cache_resource
@@ -156,8 +144,13 @@ if "chat_session" not in st.session_state:
     )
 
 # ==================== 🧠 GIAO DIỆN NGƯỜI DÙNG ====================
-st.title("🎓 GIA SƯ AI 24/7 - HỖ TRỢ HỌC TẬP")
-st.caption("Xin chào 👋 Tôi là **Trợ lý AI do thầy Mai Thiện Chánh tạo ra** – Hãy gửi câu hỏi hoặc hình bài tập, tôi sẽ giúp bạn học thật hiệu quả!")
+st.markdown("""
+<div class="custom-top-banner">
+    🎓 GIA SƯ AI 24/7 – HỖ TRỢ HỌC TẬP
+    <div class="custom-top-banner-sub">Trợ lý học tập thông minh do Thầy Mai Thiện Chánh phát triển</div>
+</div>
+""", unsafe_allow_html=True)
+
 
 st.markdown("---")
 st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để được hướng dẫn chi tiết:**")
@@ -232,6 +225,7 @@ st.markdown("""
         </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
