@@ -38,7 +38,7 @@ header, [data-testid="stHeader"] {
 
 /* Tiêu đề */
 .custom-top-banner-title {
-    color: white;
+    color: blue;
     font-weight: 800;
     font-size: 2.3em;
     margin: 0;                 /* xoá margin tự nhiên */
@@ -46,7 +46,7 @@ header, [data-testid="stHeader"] {
 
 /* Dòng mô tả */
 .custom-top-banner-sub {
-    color: #e9f0ff;
+    color: blue;
     font-size: 1.15em;
     font-weight: 300;
     margin-top: 4px;
@@ -260,6 +260,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
