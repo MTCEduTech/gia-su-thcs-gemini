@@ -144,6 +144,18 @@ html, body, [data-testid="stAppViewContainer"] {
     margin-right: 8px;
 }
 
+/* ⭐ ÉP KHUNG NHẬP CHAT TRÀN FULL MÀN HÌNH */
+[data-testid="stChatInput"] {
+    width: 100vw !important;       /* tràn toàn màn hình */
+    margin-left: calc(-50vw + 50%); /* kéo sát ra 2 mép */
+    margin-right: 0 !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    background-color: #87CEEB !important;
+    border-radius: 0 !important;   /* nếu muốn bo tròn thì đổi lại */
+    border: none !important;
+}
+
 </style>
 
 """, unsafe_allow_html=True)
@@ -260,6 +272,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
