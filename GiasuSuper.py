@@ -195,9 +195,9 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
     )
 
     contents = [
-    types.Part(text=system_time_note)
-    prompt
-]
+        types.Part(text=system_time_note),
+        types.Part(text=prompt)              # 📌 Prompt của học sinh
+    ]
 
 
     if image_part:
@@ -232,6 +232,7 @@ st.markdown("""
         </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
