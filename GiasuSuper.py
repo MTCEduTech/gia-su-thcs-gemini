@@ -113,7 +113,7 @@ header, [data-testid="stHeader"] {
     font-weight: 600;
 }
 [data-testid="stChatInput"] button:hover {
-    background: #0048D6 !important;
+    background: #87CEEB !important;
 }
 
 /* ===================== 🔵 FOOTER FULL-WIDTH ===================== */
@@ -260,6 +260,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
