@@ -9,45 +9,50 @@ import streamlit.components.v1 as components # 👈 ĐÃ THÊM: Import component
 st.markdown("""
 <style>
 
-/* ===================== 🌟 BANNER TRÀN FULL MÀN HÌNH ===================== */
+/* ===================== 🌟 BANNER TRÀN FULL MÀN HÌNH – FLEX CĂN GIỮA ===================== */
 
-/* XÓA MARGIN/PADDING MẶC ĐỊNH CỦA STREAMLIT ĐỂ BANNER SÁT ĐẦU TRANG */
+/* XÓA PADDING/MARGIN MẶC ĐỊNH CỦA STREAMLIT ĐỂ BANNER SÁT ĐẦU TRANG */
 html, body, [data-testid="stAppViewContainer"], .main, .block-container {
     padding-top: 0 !important;
     margin-top: 0 !important;
 }
 
-/* Banner full width nằm sát mép trên */
+/* Banner full width và chữ luôn nằm giữa */
 .custom-top-banner-wrapper {
     position: relative;
-    width: 100vw;        /* Tràn 100% chiều ngang thực */
+    width: 100vw;
     left: 50%;
     right: 50%;
-    margin-left: -50vw;  /* Kéo ra khỏi container của Streamlit */
+    margin-left: -50vw;
     margin-right: -50vw;
 
     background: linear-gradient(90deg, #005CFF, #003EA8);
-    text-align: center;
-    padding: 34px 0 38px 0;   /* Thay bằng padding theo ý Thầy */
     box-shadow: 0 2px 12px rgba(0,0,0,0.18);
 
-    margin-top: 0 !important;   /* đảm bảo sát mép trên */
+    /* ⭐ FLEXBOX: căn giữa theo chiều dọc và ngang */
+    display: flex;
+    flex-direction: column;
+    align-items: center;       /* căn giữa ngang */
+    justify-content: center;   /* căn giữa dọc */
+
+    height: 130px;             /* CHIỀU CAO CỐ ĐỊNH GIÚP CĂN CHỮ CHUẨN */
+    text-align: center;
 }
 
-/* Dòng tiêu đề chính */
+/* Tiêu đề */
 .custom-top-banner-title {
     color: white;
     font-weight: 800;
     font-size: 2.3em;
-    letter-spacing: 0.5px;
+    margin: 0;                 /* xoá margin tự nhiên */
 }
 
-/* Dòng mô tả phụ */
+/* Dòng mô tả */
 .custom-top-banner-sub {
     color: #e9f0ff;
-    margin-top: -4px;
     font-size: 1.15em;
     font-weight: 300;
+    margin-top: 4px;
 }
 
 /* ===================== 🎨 NỀN & BỐ CỤC TỔNG THỂ ===================== */
@@ -258,6 +263,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
