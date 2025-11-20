@@ -9,24 +9,33 @@ import streamlit.components.v1 as components # 👈 ĐÃ THÊM: Import component
 st.markdown("""
 <style>
 
-/* ---------------- 🌟 BANNER ĐẦU TRANG ---------------- */
-.custom-top-banner {
-    width: 100%;
-    background: linear-gradient(90deg, #005CFF, #003EA8); /* Xanh blue nổi bật */
-    padding: 28px 0 32px 0;
+/* ---------------- 🌟 BANNER FULL MÀN HÌNH ---------------- */
+.custom-top-banner-wrapper {
+    position: relative;
+    width: 100vw;                 /* FULL viewport width */
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;           /* Kéo ra khỏi container */
+    margin-right: -50vw;
+    background: linear-gradient(90deg, #005CFF, #003EA8);
     text-align: center;
+    padding: 32px 0 36px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.custom-top-banner-title {
     color: white;
     font-weight: 800;
-    font-size: 2.1em;
-    letter-spacing: 1px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    font-size: 2.2em;
 }
+
 .custom-top-banner-sub {
     color: #e8e8e8;
-    margin-top: -8px;
-    font-size: 1.05em;
+    margin-top: -6px;
+    font-size: 1.1em;
     font-weight: 300;
 }
+
 
 
 /* ---------------- 🎨 NỀN & FONT TỔNG THỂ ---------------- */
@@ -145,12 +154,11 @@ if "chat_session" not in st.session_state:
 
 # ==================== 🧠 GIAO DIỆN NGƯỜI DÙNG ====================
 st.markdown("""
-<div class="custom-top-banner">
-    🎓 GIA SƯ AI 24/7 – HỖ TRỢ HỌC TẬP
+<div class="custom-top-banner-wrapper">
+    <div class="custom-top-banner-title">🎓 GIA SƯ AI 24/7 – HỖ TRỢ HỌC TẬP</div>
     <div class="custom-top-banner-sub">Trợ lý học tập thông minh do Thầy Mai Thiện Chánh phát triển</div>
 </div>
 """, unsafe_allow_html=True)
-
 
 st.markdown("---")
 st.markdown("📚 **Nhập câu hỏi hoặc tải ảnh bài tập để được hướng dẫn chi tiết:**")
@@ -225,6 +233,7 @@ st.markdown("""
         </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
