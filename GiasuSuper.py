@@ -23,7 +23,7 @@ header, [data-testid="stHeader"] {
     margin-left: -50vw;
     margin-right: -50vw;
 
-    background: linear-gradient(90deg, #005CFF, #003EA8);
+    background: #87CEEB;
     box-shadow: 0 2px 12px rgba(0,0,0,0.18);
 
     /* ⭐ FLEXBOX: căn giữa theo chiều dọc và ngang */
@@ -260,6 +260,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
