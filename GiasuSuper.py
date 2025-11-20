@@ -107,7 +107,7 @@ header, [data-testid="stHeader"] {
     box-shadow: 0 -3px 10px rgba(0,0,0,0.05);
 }
 [data-testid="stChatInput"] button {
-    background: #87CEEB !important;
+    background: #FFFFFF !important;
     color: blue !important;
     border-radius: 8px;
     font-weight: 600;
@@ -260,6 +260,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
