@@ -104,20 +104,22 @@ st.markdown("""
 footer {visibility: hidden;}
 
 .custom-footer-container {
-    position: relative;
-    width: 100vw;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
-
+    position: fixed;              /* LUÔN CỐ ĐỊNH Ở CHÂN TRANG */
+    bottom: 0;
+    left: 0;
+    width: 100vw;                 /* TRÀN FULL MÀN HÌNH */
     background: #003EA8;
     padding: 12px 0;
     text-align: center;
     color: white;
     font-size: 0.9em;
     box-shadow: 0 -3px 10px rgba(0,0,0,0.18);
-    margin-top: 40px;
+    z-index: 999999;              /* ƯU TIÊN HIỂN THỊ */
+}
+
+/* 🧱 TẠO KHOẢNG TRỐNG ĐỂ NỘI DUNG KHÔNG CHE FOOTER */
+html, body, [data-testid="stAppViewContainer"] {
+    padding-bottom: 90px !important;
 }
 
 /* ===================== ICON CHAT ===================== */
@@ -242,6 +244,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
