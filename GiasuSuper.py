@@ -52,7 +52,7 @@ html, body, [data-testid="stAppViewContainer"], .main, .block-container {
 
 /* ===================== 🎨 NỀN & BỐ CỤC TỔNG THỂ ===================== */
 [data-testid="stAppViewContainer"] {
-    background-color: #F4F7FF;   /* ⭐ Nền xanh nhạt rất dễ nhìn */
+    background-color: #87CEEB;   /* ⭐ Nền xanh nhạt rất dễ nhìn */
     font-family: 'Inter', 'Segoe UI', sans-serif;
     color: #202020;
 }
@@ -258,6 +258,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
