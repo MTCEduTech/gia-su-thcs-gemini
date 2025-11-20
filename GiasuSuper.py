@@ -10,25 +10,39 @@ st.markdown("""
 <style>
 
 /* ===================== 🌟 BANNER TRÀN FULL MÀN HÌNH ===================== */
+
+/* XÓA MARGIN/PADDING MẶC ĐỊNH CỦA STREAMLIT ĐỂ BANNER SÁT ĐẦU TRANG */
+html, body, [data-testid="stAppViewContainer"], .main, .block-container {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Banner full width nằm sát mép trên */
 .custom-top-banner-wrapper {
     position: relative;
-    width: 100vw;
+    width: 100vw;        /* Tràn 100% chiều ngang thực */
     left: 50%;
     right: 50%;
-    margin-left: -50vw;
+    margin-left: -50vw;  /* Kéo ra khỏi container của Streamlit */
     margin-right: -50vw;
 
     background: linear-gradient(90deg, #005CFF, #003EA8);
     text-align: center;
-    padding: 34px 0 38px 0;
+    padding: 34px 0 38px 0;   /* Thay bằng padding theo ý Thầy */
     box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+
+    margin-top: 0 !important;   /* đảm bảo sát mép trên */
 }
+
+/* Dòng tiêu đề chính */
 .custom-top-banner-title {
     color: white;
     font-weight: 800;
     font-size: 2.3em;
     letter-spacing: 0.5px;
 }
+
+/* Dòng mô tả phụ */
 .custom-top-banner-sub {
     color: #e9f0ff;
     margin-top: -4px;
@@ -244,6 +258,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
