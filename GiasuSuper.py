@@ -9,71 +9,66 @@ import streamlit.components.v1 as components # 👈 ĐÃ THÊM: Import component
 st.markdown("""
 <style>
 
-/* ---------------- 🌟 BANNER FULL MÀN HÌNH ---------------- */
+/* ===================== 🌟 BANNER TRÀN FULL MÀN HÌNH ===================== */
 .custom-top-banner-wrapper {
     position: relative;
-    width: 100vw;                 /* FULL viewport width */
+    width: 100vw;
     left: 50%;
     right: 50%;
-    margin-left: -50vw;           /* Kéo ra khỏi container */
+    margin-left: -50vw;
     margin-right: -50vw;
+
     background: linear-gradient(90deg, #005CFF, #003EA8);
     text-align: center;
-    padding: 32px 0 36px 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    padding: 34px 0 38px 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
 }
-
 .custom-top-banner-title {
     color: white;
     font-weight: 800;
-    font-size: 2.2em;
+    font-size: 2.3em;
+    letter-spacing: 0.5px;
 }
-
 .custom-top-banner-sub {
-    color: #e8e8e8;
-    margin-top: -6px;
-    font-size: 1.1em;
+    color: #e9f0ff;
+    margin-top: -4px;
+    font-size: 1.15em;
     font-weight: 300;
 }
 
-
-
-/* ---------------- 🎨 NỀN & FONT TỔNG THỂ ---------------- */
+/* ===================== 🎨 NỀN & BỐ CỤC TỔNG THỂ ===================== */
 [data-testid="stAppViewContainer"] {
-    background-color: #f6f9ff; /* Xanh nhạt nhẹ nhàng, sang trọng */
+    background-color: #F4F7FF;   /* ⭐ Nền xanh nhạt rất dễ nhìn */
     font-family: 'Inter', 'Segoe UI', sans-serif;
-    color: #222;
+    color: #202020;
 }
 
-/* ---------------- 📝 TIÊU ĐỀ MỤC ---------------- */
-.section-title {
+/* ===================== 🏷 TIÊU ĐỀ SECTION ===================== */
+.section-title, h2, h3 {
     font-weight: 700;
     color: #003EA8;
-    font-size: 1.25em;
-    margin-bottom: 10px;
 }
 
-/* ---------------- 📦 UPLOAD FILE BOX ---------------- */
+/* ===================== 📦 BOX UPLOAD ===================== */
 .stFileUploader {
-    border: 2px dashed #3A6DFF;
+    border: 2px dashed #1E50FF;
     background: #ffffff;
     border-radius: 14px;
     padding: 18px;
 }
 .stFileUploader:hover {
     background: #f0f5ff;
-    border-color: #1E50FF;
+    border-color: #0048D6;
 }
 
-/* ---------------- 💬 KHUNG CHAT ---------------- */
+/* ===================== 💬 KHUNG CHAT ===================== */
 .stChatMessage {
     border-radius: 14px;
     padding: 14px 20px;
-    line-height: 1.6;
     font-size: 1.05em;
-    border: 1px solid #e0e6f5;
     background: white;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    border: 1px solid #e0e6f5;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 /* User */
 .stChatMessage[data-testid="stChatMessageUser"] {
@@ -83,20 +78,20 @@ st.markdown("""
 /* Assistant */
 .stChatMessage[data-testid="stChatMessageAssistant"] {
     margin-right: 20%;
-    background: #f4f6ff;
-    border-left: 4px solid #274BC8;
+    background: #F6F8FF;
+    border-left: 4px solid #003EA8;
 }
 
-/* ---------------- ✏️ Ô NHẬP CHAT ---------------- */
+/* ===================== ✏️ Ô GỬI TIN NHẮN ===================== */
 [data-testid="stChatInput"] {
     background-color: #ffffff;
     border-radius: 14px;
     padding: 12px;
-    border-top: 2px solid #e3e9ff;
-    box-shadow: 0 -3px 10px rgba(0,0,0,0.06);
+    border-top: 2px solid #dfe6ff;
+    box-shadow: 0 -3px 10px rgba(0,0,0,0.05);
 }
 [data-testid="stChatInput"] button {
-    background: #005CFF;
+    background: #005CFF !important;
     color: white !important;
     border-radius: 8px;
     font-weight: 600;
@@ -105,22 +100,34 @@ st.markdown("""
     background: #0048D6 !important;
 }
 
-/* ---------------- 🔵 FOOTER ---------------- */
+/* ===================== 🔵 FOOTER FULL-WIDTH ===================== */
 footer {visibility: hidden;}
+
 .custom-footer-container {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+
     background: #003EA8;
-    padding: 10px 0;
+    padding: 12px 0;
     text-align: center;
     color: white;
-    font-size: 0.85em;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
-    z-index: 99999;
+    font-size: 0.9em;
+    box-shadow: 0 -3px 10px rgba(0,0,0,0.18);
+    margin-top: 40px;
+}
+
+/* ===================== ICON CHAT ===================== */
+.chat-icon {
+    font-size: 20px;
+    margin-right: 8px;
 }
 
 </style>
+
 """, unsafe_allow_html=True)
 
 
@@ -228,11 +235,15 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
 # ==================== 🧾 FOOTER ====================
 st.markdown("""
 <div class="custom-footer-container">
-    © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh | Trường THCS Đức Phú, Lâm Đồng || <a href="https://dayhoctichcuc.netlify.app/" target="_blank" class="home-button-link" style="color: white; text-decoration: none;">
-            🏠 Về trang chủ BỘ CÔNG CỤ DẠY HỌC TÍCH CỰC
-        </a>
+    © 2025 Gia Sư AI THCS – Phát triển bởi Thầy Chánh |
+    Trường THCS Đức Phú, Lâm Đồng |
+    <a href="https://dayhoctichcuc.netlify.app/" target="_blank" style="color: white; text-decoration: none;">
+        🏠 Về trang chủ BỘ CÔNG CỤ DẠY HỌC TÍCH CỰC
+    </a>
 </div>
 """, unsafe_allow_html=True)
+
+
 
 
 
