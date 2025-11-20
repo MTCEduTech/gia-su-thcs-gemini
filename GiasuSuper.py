@@ -47,7 +47,7 @@ header, [data-testid="stHeader"] {
 
 /* Dòng mô tả */
 .custom-top-banner-sub {
-    color: blue;
+    color: white;
     font-size: 1.15em;
     font-weight: 300;
     margin-top: 4px;
@@ -261,6 +261,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
