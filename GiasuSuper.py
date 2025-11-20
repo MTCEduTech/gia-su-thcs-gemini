@@ -127,7 +127,7 @@ footer {visibility: hidden;}
     background: #003EA8;
     padding: 12px 0;
     text-align: center;
-    color: blue;
+    color: white;
     font-size: 0.9em;
     box-shadow: 0 -3px 10px rgba(0,0,0,0.18);
     z-index: 999999;              /* ƯU TIÊN HIỂN THỊ */
@@ -260,6 +260,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
