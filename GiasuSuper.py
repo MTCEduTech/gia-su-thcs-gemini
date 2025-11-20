@@ -178,9 +178,24 @@ for msg in st.session_state.chat_session.get_history():
     with st.chat_message(role):
         st.markdown(f"<span class='chat-icon'>{icon}</span>{msg.parts[0].text}", unsafe_allow_html=True)
 
-# ==================== ✍️ NHẬP CHAT ====================
+# ==================== ✍️ NHẬP CHAT CẬP NHẬT NGÀY THÁNG ====================
+from datetime import datetime
+
 if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
-    contents = [prompt]
+
+    # 🎯 LẤY NGÀY GIỜ THỰC TẾ TỪ HỆ THỐNG
+    real_time = datetime.now().strftime("Hôm nay là ngày %d tháng %m năm %Y, Thứ %A.")
+
+    # 🎯 CHÈN THÔNG ĐIỆP ÉP BUỘC AI LUÔN DÙNG NGÀY THỰC
+    system_time_note = (
+        "LƯU Ý CHO MÔ HÌNH: Đây là ngày giờ thực tế của hệ thống máy chủ: "
+        + real_time +
+        ". Khi học sinh hỏi về ngày tháng hoặc thời gian, bạn **PHẢI** dùng đúng thông tin này "
+        "và **KHÔNG ĐƯỢC** tự suy đoán hoặc sử dụng ngày khác."
+    )
+
+    contents = [system_time_note, prompt]
+
     if image_part:
         contents.insert(0, image_part)
         with st.chat_message("Học sinh"):
@@ -213,6 +228,7 @@ st.markdown("""
         </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
