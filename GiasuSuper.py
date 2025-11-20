@@ -5,7 +5,7 @@ from google import genai
 from google.genai import types
 import streamlit.components.v1 as components # 👈 ĐÃ THÊM: Import component để chèn HTML an toàn
 
-# ==================== 🎨 CSS TÙY CHỈNH GIAO DIỆN CHUYÊN NGHIỆP VÀ TỐI GIẢN ====================
+# ==================== 🎨 CSS TÙY CHỈNH ====================
 st.markdown("""
 <style>
 
@@ -14,7 +14,6 @@ st.markdown("""
 header, [data-testid="stHeader"] {
     display: none !important;
 }
-
 
 .custom-top-banner-wrapper {
     position: relative;
@@ -25,7 +24,7 @@ header, [data-testid="stHeader"] {
     margin-right: -50vw;
 
     background: #87CEEB;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+
 
     /* ⭐ FLEXBOX: căn giữa theo chiều dọc và ngang */
     display: flex;
@@ -261,6 +260,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
