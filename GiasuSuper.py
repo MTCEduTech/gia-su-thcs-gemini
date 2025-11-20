@@ -82,7 +82,7 @@ header, [data-testid="stHeader"] {
     border-radius: 14px;
     padding: 14px 20px;
     font-size: 1.05em;
-    background: #87CEEB;
+    background: white;
     border: 1px solid #e0e6f5;
     box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
@@ -260,6 +260,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
