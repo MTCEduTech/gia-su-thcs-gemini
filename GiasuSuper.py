@@ -94,7 +94,7 @@ header, [data-testid="stHeader"] {
 /* Assistant */
 .stChatMessage[data-testid="stChatMessageAssistant"] {
     margin-right: 20%;
-    background: #F6F8FF;
+    background: #87CEEB;
     border-left: 4px solid #003EA8;
 }
 
@@ -260,6 +260,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
