@@ -156,7 +156,7 @@ if "chat_session" not in st.session_state:
     )
 
 # ==================== 🧠 GIAO DIỆN NGƯỜI DÙNG ====================
-st.title("🎓 GIA SƯ AI 24/7 - Hỗ trợ Học Tập")
+st.title("🎓 GIA SƯ AI 24/7 - HỖ TRỢ HỌC TẬP")
 st.caption("Xin chào 👋 Tôi là **Trợ lý AI do thầy Mai Thiện Chánh tạo ra** – Hãy gửi câu hỏi hoặc hình bài tập, tôi sẽ giúp bạn học thật hiệu quả!")
 
 st.markdown("---")
@@ -232,6 +232,7 @@ st.markdown("""
         </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
