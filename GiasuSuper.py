@@ -48,7 +48,7 @@ header, [data-testid="stHeader"] {
 .custom-top-banner-sub {
     color: white;
     font-size: 1.15em;
-    font-weight: 300;
+    font-weight: 500;
     margin-top: 4px;
 }
 
@@ -260,6 +260,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
