@@ -115,19 +115,6 @@ header, [data-testid="stHeader"] {
 [data-testid="stChatInput"] button:hover {
     background: #87CEEB !important;
 }
-/* XÓA NỀN TRẮNG BÊN TRONG Ô CHAT */
-[data-testid="stChatInput"] textarea {
-    background-color: #87CEEB !important;
-    color: #000 !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-/* XÓA luôn viền trắng bao quanh input */
-[data-testid="stChatInput"] > div {
-    background-color: #87CEEB !important;
-    box-shadow: none !important;
-}
 
 /* ===================== 🔵 FOOTER FULL-WIDTH ===================== */
 footer {visibility: hidden;}
@@ -273,6 +260,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
