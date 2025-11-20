@@ -103,7 +103,7 @@ header, [data-testid="stHeader"] {
     background-color: #87CEEB;
     border-radius: 14px;
     padding: 12px;
-    border-top: 2px solid blue;
+    border-top: 2px solid #dfe6ff;
     box-shadow: 0 -3px 10px rgba(0,0,0,0.05);
 }
 [data-testid="stChatInput"] button {
@@ -127,7 +127,7 @@ footer {visibility: hidden;}
     background: #003EA8;
     padding: 12px 0;
     text-align: center;
-    color: white;
+    color: blue;
     font-size: 0.9em;
     box-shadow: 0 -3px 10px rgba(0,0,0,0.18);
     z-index: 999999;              /* ƯU TIÊN HIỂN THỊ */
@@ -260,6 +260,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
