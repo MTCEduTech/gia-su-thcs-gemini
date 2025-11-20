@@ -9,15 +9,7 @@ import streamlit.components.v1 as components # 👈 ĐÃ THÊM: Import component
 st.markdown("""
 <style>
 
-/* ===================== 🌟 BANNER TRÀN FULL MÀN HÌNH – FLEX CĂN GIỮA ===================== */
-
-/* XÓA PADDING/MARGIN MẶC ĐỊNH CỦA STREAMLIT ĐỂ BANNER SÁT ĐẦU TRANG */
-html, body, [data-testid="stAppViewContainer"], .main, .block-container {
-    padding-top: 0 !important;
-    margin-top: 0 !important;
-}
-
-/* Banner full width và chữ luôn nằm giữa */
+/* ===================== 🌟 BANNER ===================== */
 .custom-top-banner-wrapper {
     position: relative;
     width: 100vw;
@@ -263,6 +255,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
