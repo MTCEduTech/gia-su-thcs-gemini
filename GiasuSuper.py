@@ -194,7 +194,11 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
         "và **KHÔNG ĐƯỢC** tự suy đoán hoặc sử dụng ngày khác."
     )
 
-    contents = [system_time_note, prompt]
+    contents = [
+    types.Part.from_text(system_time_note),  # không hiển thị ra UI
+    prompt
+]
+
 
     if image_part:
         contents.insert(0, image_part)
@@ -228,6 +232,7 @@ st.markdown("""
         </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
