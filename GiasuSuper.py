@@ -10,9 +10,9 @@ st.markdown("""
 <style>
 
 /* ===================== 🌟 BANNER ===================== */
-/* ẨN HEADER STREAMLIT (Logo + menu) */
-header, [data-testid="stHeader"] {
-    display: none !important;
+html, body, [data-testid="stAppViewContainer"], .main, .block-container {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
 }
 
 .custom-top-banner-wrapper {
@@ -260,6 +260,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
