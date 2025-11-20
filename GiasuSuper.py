@@ -195,7 +195,7 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
     )
 
     contents = [
-    types.Part.from_text(system_time_note),  # không hiển thị ra UI
+    types.Part(text=system_time_note)
     prompt
 ]
 
@@ -232,6 +232,7 @@ st.markdown("""
         </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
