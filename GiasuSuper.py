@@ -100,7 +100,7 @@ header, [data-testid="stHeader"] {
 
 /* ===================== ✏️ Ô GỬI TIN NHẮN ===================== */
 [data-testid="stChatInput"] {
-    background-color: #87CEEB;
+    background-color: blue;
     border-radius: 14px;
     padding: 12px;
     border-top: 2px solid #dfe6ff;
@@ -260,6 +260,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
