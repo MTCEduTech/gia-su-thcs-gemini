@@ -103,7 +103,7 @@ header, [data-testid="stHeader"] {
     background-color: #87CEEB;
     border-radius: 14px;
     padding: 12px;
-    border-top: 2px solid #dfe6ff;
+    border-top: 2px solid blue;
     box-shadow: 0 -3px 10px rgba(0,0,0,0.05);
 }
 [data-testid="stChatInput"] button {
@@ -260,6 +260,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
