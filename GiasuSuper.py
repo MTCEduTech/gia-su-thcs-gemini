@@ -228,10 +228,16 @@ if st.button("🗑 Xóa toàn bộ cuộc trò chuyện"):
 # ==================== 🕐 HIỂN THỊ LỊCH SỬ CHAT ====================
 for msg in st.session_state.chat_session.get_history():
 
+    # ẨN TIN NHẮN SYSTEM - tuyệt đối không hiển thị
+    if msg.role == "system":
+        continue
+
     role = "Thầy Chánh" if msg.role == "model" else "Học sinh"
-    icon = "🤖" if role == "Thầy Chánh" else "👩‍🎓"
+    icon = "🤖" if msg.role == "model" else "👩‍🎓"
+
     with st.chat_message(role):
         st.markdown(f"<span class='chat-icon'>{icon}</span>{msg.parts[0].text}", unsafe_allow_html=True)
+
 
 # ==================== ✍️ NHẬP CHAT CẬP NHẬT NGÀY THÁNG ====================
 from datetime import datetime
@@ -282,10 +288,11 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
         "tự tạo hoặc dùng ngày khác."
     )
 
-    contents = [
-        types.Part(text=system_time_note),
-        types.Part(text=prompt)  # 📌 Prompt học sinh
-    ]
+   response = st.session_state.chat_session.send_message([
+    {"role": "system", "parts": [types.Part(text=system_time_note)]},
+    {"role": "user", "parts": [types.Part(text=prompt)]}
+])
+
 
     if image_part:
         contents.insert(0, image_part)
@@ -331,6 +338,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
