@@ -165,18 +165,35 @@ def get_gemini_client():
             st.stop()
 
 client = get_gemini_client()
-
-# ==================== 💬 KHỞI TẠO PHIÊN CHAT ====================
-if "chat_session" not in st.session_state:
-    config = types.GenerateContentConfig(
-        # Đã sửa: Thêm hướng dẫn để AI luôn xưng là 'Thầy'
-        system_instruction="Bạn là Thầy Chánh - Gia Sư AI THCS thân thiện, giúp học sinh lớp 6–9 học tất cả các môn. Bạn phải luôn xưng là 'Thầy' hoặc 'Thầy Chánh' khi giao tiếp. Giải thích dễ hiểu, có ví dụ cụ thể.",
+# ==================== ⚙️ LƯU CONFIG TOÀN CỤC ====================
+if "chat_config" not in st.session_state:
+    st.session_state.chat_config = types.GenerateContentConfig(
+        system_instruction=(
+            "Bạn là Thầy Chánh - Gia Sư AI THCS thân thiện..."
+        ),
         temperature=1
     )
+
+# ==================== 💬 KHỞI TẠO PHIÊN CHAT ====================
+
+# Lưu CONFIG vào session_state để có thể dùng lại khi xóa chat
+if "chat_config" not in st.session_state:
+    st.session_state.chat_config = types.GenerateContentConfig(
+        system_instruction=(
+            "Bạn là Thầy Chánh - Gia Sư AI THCS thân thiện, giúp học sinh lớp 6–9 học tất cả "
+            "các môn. Bạn phải luôn xưng là 'Thầy' hoặc 'Thầy Chánh' khi giao tiếp. "
+            "Giải thích dễ hiểu, có ví dụ cụ thể."
+        ),
+        temperature=1
+    )
+
+# Khởi tạo phiên chat nếu chưa có
+if "chat_session" not in st.session_state:
     st.session_state.chat_session = client.chats.create(
         model="gemini-2.5-flash",
-        config=config
+        config=st.session_state.chat_config
     )
+
 
 # ==================== 🧠 GIAO DIỆN NGƯỜI DÙNG ====================
 st.markdown("""
@@ -203,7 +220,7 @@ st.markdown("---")
 if st.button("🗑 Xóa toàn bộ cuộc trò chuyện"):
     st.session_state.chat_session = client.chats.create(
         model="gemini-2.5-flash",
-        config=config
+        config=st.session_state.chat_config
     )
     st.success("Đã xóa lịch sử chat! Bắt đầu cuộc trò chuyện mới 🎉")
     st.rerun()
@@ -314,6 +331,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
