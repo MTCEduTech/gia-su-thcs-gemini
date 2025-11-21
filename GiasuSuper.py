@@ -288,14 +288,15 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
         "tự tạo hoặc dùng ngày khác."
     )
 
-   response = st.session_state.chat_session.send_message([
-    {"role": "system", "parts": [types.Part(text=system_time_note)]},
-    {"role": "user", "parts": [types.Part(text=prompt)]}
-])
+    response = st.session_state.chat_session.send_message([
+        {"role": "system", "parts": [types.Part(text=system_time_note)]},
+        {"role": "user", "parts": [types.Part(text=prompt)]}
+    ])
 
 
     if image_part:
-        contents.insert(0, image_part)
+    contents.append(image_part)
+contents.append(types.Part(text=prompt))
         with st.chat_message("Học sinh"):
             st.markdown(
                 f"<span class='chat-icon'>👩‍🎓</span>**Bài tập đính kèm:**",
@@ -338,6 +339,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
