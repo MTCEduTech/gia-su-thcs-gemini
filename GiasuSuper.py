@@ -207,25 +207,41 @@ for msg in st.session_state.chat_session.get_history():
 
 # ==================== ✍️ NHẬP CHAT CẬP NHẬT NGÀY THÁNG ====================
 from datetime import datetime
+from lichviet import amlich
 
 if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
 
     # 🎯 LẤY NGÀY GIỜ THỰC TẾ TỪ HỆ THỐNG
-    real_time = datetime.now().strftime("Hôm nay là ngày %d tháng %m năm %Y, Thứ %A.")
+    now = datetime.now()
 
-    # 🎯 CHÈN THÔNG ĐIỆP ÉP BUỘC AI LUÔN DÙNG NGÀY THỰC
+    # Dương lịch
+    real_time_dl = f"Hôm nay là ngày {now.day} tháng {now.month} năm {now.year}, Thứ {now.strftime('%A')}."
+
+    # 🎯 TÍNH ÂM LỊCH
+    al = amlich.convertSolar2Lunar(now.day, now.month, now.year)
+    ngay_am, thang_am, nam_am = al[0], al[1], al[2]
+
+    # Lấy Can Chi năm âm lịch
+    can, chi = amlich.getYearCanChi(nam_am)
+    ten_nam = f"{can} {chi}"
+
+    real_time_am = (
+        f"Theo Âm lịch, hôm nay là ngày {ngay_am} tháng {thang_am} năm {ten_nam}."
+    )
+
+    # 🎯 CHÈN THÔNG ĐIỆP ÉP BUỘC AI LUÔN DÙNG NGÀY ÂM + DƯƠNG LỊCH THỰC
     system_time_note = (
-        "LƯU Ý CHO MÔ HÌNH: Đây là ngày giờ thực tế của hệ thống máy chủ: "
-        + real_time +
-        ". Khi học sinh hỏi về ngày tháng hoặc thời gian, bạn **PHẢI** dùng đúng thông tin này "
-        "và **KHÔNG ĐƯỢC** tự suy đoán hoặc sử dụng ngày khác."
+        "LƯU Ý CHO MÔ HÌNH: Đây là ngày giờ thực tế của hệ thống máy chủ. "
+        + real_time_dl + " "
+        + real_time_am +
+        " Khi học sinh hỏi về ngày tháng, âm lịch, dương lịch, thời gian,"
+        " bạn **PHẢI** dùng đúng thông tin này và **KHÔNG ĐƯỢC** tự suy đoán hoặc trả lời ngày khác."
     )
 
     contents = [
         types.Part(text=system_time_note),
         types.Part(text=prompt)              # 📌 Prompt của học sinh
     ]
-
 
     if image_part:
         contents.insert(0, image_part)
@@ -240,16 +256,17 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
     with st.spinner("⏳ Thầy Chánh đang suy nghĩ..."):
         response = st.session_state.chat_session.send_message(contents)
 
-# Hiệu ứng “gõ chữ dần dần”
+    # Hiệu ứng “gõ chữ dần dần”
     with st.chat_message("Thầy Chánh"):
         placeholder = st.empty()
         text_display = ""
         for char in response.text:
             text_display += char
-            # ĐÃ SỬA: Xóa dấu '}' thừa
-            placeholder.markdown(f"<span class='chat-icon'>🤖</span>{text_display}", unsafe_allow_html=True) 
-            time.sleep(0.008)  # tốc độ gõ (nhanh hơn một chút)
+            placeholder.markdown(f"<span class='chat-icon'>🤖</span>{text_display}", unsafe_allow_html=True)
+            time.sleep(0.008)
+
         st.session_state.last_response = response.text
+
 
 # ==================== 🧾 FOOTER ====================
 st.markdown("""
@@ -261,6 +278,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
