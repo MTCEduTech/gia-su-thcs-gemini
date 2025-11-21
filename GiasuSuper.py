@@ -207,62 +207,87 @@ for msg in st.session_state.chat_session.get_history():
 
 # ==================== ✍️ NHẬP CHAT CẬP NHẬT NGÀY THÁNG ====================
 from datetime import datetime
-from lichviet import amlich
+from lunardate import LunarDate
+
+# Hàm tính Can Chi năm âm lịch
+def can_chi_year(year):
+    can_list = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"]
+    chi_list = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"]
+
+    can = can_list[(year + 6) % 10]
+    chi = chi_list[(year + 8) % 12]
+    return f"{can} {chi}"
+
 
 if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
 
     # 🎯 LẤY NGÀY GIỜ THỰC TẾ TỪ HỆ THỐNG
     now = datetime.now()
 
-    # Dương lịch
-    real_time_dl = f"Hôm nay là ngày {now.day} tháng {now.month} năm {now.year}, Thứ {now.strftime('%A')}."
+    # 🎯 Dương lịch
+    real_time_dl = (
+        f"Hôm nay là ngày {now.day} tháng {now.month} năm {now.year}, "
+        f"Thứ {now.strftime('%A')}."
+    )
 
-    # 🎯 TÍNH ÂM LỊCH
-    al = amlich.convertSolar2Lunar(now.day, now.month, now.year)
-    ngay_am, thang_am, nam_am = al[0], al[1], al[2]
+    # 🎯 TÍNH ÂM LỊCH BẰNG lunardate
+    lunar = LunarDate.fromSolarDate(now.year, now.month, now.day)
+    ngay_am = lunar.day
+    thang_am = lunar.month
+    nam_am = lunar.year
 
-    # Lấy Can Chi năm âm lịch
-    can, chi = amlich.getYearCanChi(nam_am)
-    ten_nam = f"{can} {chi}"
+    # Tính Can Chi năm âm lịch
+    ten_nam = can_chi_year(nam_am)
 
+    # 🎯 Chuỗi âm lịch hiển thị
     real_time_am = (
         f"Theo Âm lịch, hôm nay là ngày {ngay_am} tháng {thang_am} năm {ten_nam}."
     )
 
-    # 🎯 CHÈN THÔNG ĐIỆP ÉP BUỘC AI LUÔN DÙNG NGÀY ÂM + DƯƠNG LỊCH THỰC
+    # 🎯 CHÈN THÔNG ĐIỆP ÉP BUỘC AI LUÔN DÙNG ĐÚNG NGÀY ÂM + DƯƠNG LỊCH
     system_time_note = (
         "LƯU Ý CHO MÔ HÌNH: Đây là ngày giờ thực tế của hệ thống máy chủ. "
         + real_time_dl + " "
         + real_time_am +
-        " Khi học sinh hỏi về ngày tháng, âm lịch, dương lịch, thời gian,"
-        " bạn **PHẢI** dùng đúng thông tin này và **KHÔNG ĐƯỢC** tự suy đoán hoặc trả lời ngày khác."
+        " Khi học sinh hỏi về ngày tháng, âm lịch, dương lịch, thời gian, "
+        "bạn **PHẢI** dùng đúng các thông tin này và **KHÔNG ĐƯỢC** suy đoán, "
+        "tự tạo hoặc dùng ngày khác."
     )
 
     contents = [
         types.Part(text=system_time_note),
-        types.Part(text=prompt)              # 📌 Prompt của học sinh
+        types.Part(text=prompt)  # 📌 Prompt học sinh
     ]
 
     if image_part:
         contents.insert(0, image_part)
         with st.chat_message("Học sinh"):
-            st.markdown(f"<span class='chat-icon'>👩‍🎓</span>**Bài tập đính kèm:**", unsafe_allow_html=True)
+            st.markdown(
+                f"<span class='chat-icon'>👩‍🎓</span>**Bài tập đính kèm:**",
+                unsafe_allow_html=True
+            )
             st.image(image_bytes, width=180)
             st.markdown(prompt)
     else:
         with st.chat_message("Học sinh"):
-            st.markdown(f"<span class='chat-icon'>👩‍🎓</span>{prompt}", unsafe_allow_html=True)
+            st.markdown(
+                f"<span class='chat-icon'>👩‍🎓</span>{prompt}",
+                unsafe_allow_html=True
+            )
 
     with st.spinner("⏳ Thầy Chánh đang suy nghĩ..."):
         response = st.session_state.chat_session.send_message(contents)
 
-    # Hiệu ứng “gõ chữ dần dần”
+    # Hiệu ứng gõ chữ
     with st.chat_message("Thầy Chánh"):
         placeholder = st.empty()
         text_display = ""
         for char in response.text:
             text_display += char
-            placeholder.markdown(f"<span class='chat-icon'>🤖</span>{text_display}", unsafe_allow_html=True)
+            placeholder.markdown(
+                f"<span class='chat-icon'>🤖</span>{text_display}",
+                unsafe_allow_html=True
+            )
             time.sleep(0.008)
 
         st.session_state.last_response = response.text
@@ -278,6 +303,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
