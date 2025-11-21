@@ -197,9 +197,20 @@ if uploaded_file:
     st.sidebar.image(image_bytes, caption='Ảnh bài tập đã tải', width=250)
     st.success("✅ Ảnh đã tải thành công!")
 
-st.markdown("---") # Giữ nguyên đường ngăn cách
+st.markdown("---")
+
+# ==================== 🗑 NÚT XÓA LỊCH SỬ CHAT ====================
+if st.button("🗑 Xóa toàn bộ cuộc trò chuyện"):
+    st.session_state.chat_session = client.chats.create(
+        model="gemini-2.5-flash",
+        config=config
+    )
+    st.success("Đã xóa lịch sử chat! Bắt đầu cuộc trò chuyện mới 🎉")
+    st.rerun()
+
 # ==================== 🕐 HIỂN THỊ LỊCH SỬ CHAT ====================
 for msg in st.session_state.chat_session.get_history():
+
     role = "Thầy Chánh" if msg.role == "model" else "Học sinh"
     icon = "🤖" if role == "Thầy Chánh" else "👩‍🎓"
     with st.chat_message(role):
@@ -303,6 +314,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
