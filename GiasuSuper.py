@@ -162,10 +162,14 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
         "tự tạo hoặc dùng ngày khác."
     )
 
-    # Chuẩn bị nội dung gửi lên Gemini
-    # Gộp system_time_note và prompt vào một phần text để tránh gửi 'role' trong send_message()
-    final_prompt = system_time_note + "\n\n" + prompt
-    contents = [types.Part(text=final_prompt)]
+    # Cập nhật lại system instruction cho phiên chat hiện tại
+st.session_state.chat_session.update(
+    system_instruction = system_time_note
+)
+
+# Nội dung user chỉ là prompt
+contents = [types.Part(text=prompt)]
+
 
     if image_part:
         # Nếu có ảnh, chèn ảnh ở đầu danh sách nội dung
@@ -218,3 +222,4 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
