@@ -64,26 +64,7 @@ if "chat_session" not in st.session_state:
         model="gemini-2.5-flash",
         config=st.session_state.chat_config
     )
-
-# ==================== 🕐 HIỂN THỊ LỊCH SỬ CHAT ====================
-for msg in st.session_state.chat_session.get_history():
-
-    # ẨN TIN NHẮN SYSTEM - tuyệt đối không hiển thị
-    if msg.role == "system":
-        continue
-
-    role = "Thầy Chánh" if msg.role == "model" else "Học sinh"
-    icon = "🤖" if msg.role == "model" else "👩‍🎓"
-
-    with st.chat_message(role):
-        # some parts may be bytes (images) or text; handle gracefully
-        try:
-            text = msg.parts[0].text
-            st.markdown(f"<span class='chat-icon'>{icon}</span>{text}", unsafe_allow_html=True)
-        except Exception:
-            # fallback: just show representation
-            st.markdown(f"<span class='chat-icon'>{icon}</span>{str(msg)}", unsafe_allow_html=True)
-            # ==================== 🧠 GIAO DIỆN NGƯỜI DÙNG ====================
+ # ==================== 🧠 GIAO DIỆN NGƯỜI DÙNG ====================
 st.markdown("""
 <div class="custom-top-banner-wrapper">
     <div class="custom-top-banner-title">🎓 GIA SƯ AI 24/7 – HỖ TRỢ HỌC TẬP</div>
@@ -113,6 +94,25 @@ if st.button("🗑 Xóa toàn bộ cuộc trò chuyện"):
     st.success("Đã xóa lịch sử chat! Bắt đầu cuộc trò chuyện mới 🎉")
     st.rerun()
 
+# ==================== 🕐 HIỂN THỊ LỊCH SỬ CHAT ====================
+for msg in st.session_state.chat_session.get_history():
+
+    # ẨN TIN NHẮN SYSTEM - tuyệt đối không hiển thị
+    if msg.role == "system":
+        continue
+
+    role = "Thầy Chánh" if msg.role == "model" else "Học sinh"
+    icon = "🤖" if msg.role == "model" else "👩‍🎓"
+
+    with st.chat_message(role):
+        # some parts may be bytes (images) or text; handle gracefully
+        try:
+            text = msg.parts[0].text
+            st.markdown(f"<span class='chat-icon'>{icon}</span>{text}", unsafe_allow_html=True)
+        except Exception:
+            # fallback: just show representation
+            st.markdown(f"<span class='chat-icon'>{icon}</span>{str(msg)}", unsafe_allow_html=True)
+           
 # ==================== ✍️ NHẬP CHAT CẬP NHẬT NGÀY THÁNG ====================
 from datetime import datetime
 from lunardate import LunarDate
@@ -217,4 +217,5 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
