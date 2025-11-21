@@ -162,27 +162,34 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
         "tự tạo hoặc dùng ngày khác."
     )
 
-    # Cập nhật lại system instruction cho phiên chat hiện tại
+# Cập nhật lại system instruction cho phiên chat hiện tại
 st.session_state.chat_session.update(
-    system_instruction = system_time_note
+    system_instruction=system_time_note
 )
 
 # Nội dung user chỉ là prompt
 contents = [types.Part(text=prompt)]
 
+# Nếu có ảnh, thêm ảnh vào đầu danh sách
+if image_part:
+    contents.insert(0, image_part)
 
-    if image_part:
-        # Nếu có ảnh, chèn ảnh ở đầu danh sách nội dung
-        contents.insert(0, image_part)
+    # Hiển thị bài tập đính kèm
+    with st.chat_message("Học sinh"):
+        st.markdown(
+            f"<span class='chat-icon'>👩‍🎓</span>**Bài tập đính kèm:**",
+            unsafe_allow_html=True
+        )
+        st.image(image_bytes, width=180)
+        st.markdown(prompt)
 
-        # Hiển thị bài tập đính kèm cho học sinh
-        with st.chat_message("Học sinh"):
-            st.markdown(f"<span class='chat-icon'>👩‍🎓</span>**Bài tập đính kèm:**", unsafe_allow_html=True)
-            st.image(image_bytes, width=180)
-            st.markdown(prompt)
-    else:
-        with st.chat_message("Học sinh"):
-            st.markdown(f"<span class='chat-icon'>👩‍🎓</span>{prompt}", unsafe_allow_html=True)
+else:
+    # Không có ảnh → chỉ hiển thị nội dung prompt
+    with st.chat_message("Học sinh"):
+        st.markdown(
+            f"<span class='chat-icon'>👩‍🎓</span>{prompt}",
+            unsafe_allow_html=True
+        )
 
     # Gửi đến Gemini và hiển thị hiệu ứng "typing"
     try:
@@ -222,4 +229,5 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
