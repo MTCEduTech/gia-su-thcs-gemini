@@ -1,154 +1,35 @@
+
 import streamlit as st
 import os
 import time
 from google import genai
 from google.genai import types
-import streamlit.components.v1 as components # 👈 ĐÃ THÊM: Import component để chèn HTML an toàn
+import streamlit.components.v1 as components  # for potential HTML insertion
 
 # ==================== 🎨 CSS TÙY CHỈNH ====================
 st.markdown("""
 <style>
-
-/* ===================== 🌟 BANNER ===================== */
-/* ẨN HEADER STREAMLIT (Logo + menu) */
-header, [data-testid="stHeader"] {
-    display: none !important;
-}
-
-.custom-top-banner-wrapper {
-    position: relative;
-    width: 100vw;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
-
-    background: #87CEEB;
-
-
-    /* ⭐ FLEXBOX: căn giữa theo chiều dọc và ngang */
-    display: flex;
-    flex-direction: column;
-    align-items: center;       /* căn giữa ngang */
-    justify-content: center;   /* căn giữa dọc */
-
-    height: 130px;             /* CHIỀU CAO CỐ ĐỊNH GIÚP CĂN CHỮ CHUẨN */
-    text-align: center;
-}
-
-/* Tiêu đề */
-.custom-top-banner-title {
-    color: blue;
-    font-weight: 800;
-    font-size: 2.3em;
-    margin: 0;                 /* xoá margin tự nhiên */
-}
-
-/* Dòng mô tả */
-.custom-top-banner-sub {
-    color: white;
-    font-size: 1.15em;
-    font-weight: 500;
-    margin-top: 4px;
-}
-
-/* ===================== 🎨 NỀN & BỐ CỤC TỔNG THỂ ===================== */
-[data-testid="stAppViewContainer"] {
-    background-color: #87CEEB;   /* ⭐ Nền xanh nhạt rất dễ nhìn */
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    color: #202020;
-}
-
-/* ===================== 🏷 TIÊU ĐỀ SECTION ===================== */
-.section-title, h2, h3 {
-    font-weight: 700;
-    color: #003EA8;
-}
-
-/* ===================== 📦 BOX UPLOAD ===================== */
-.stFileUploader {
-    border: 2px dashed #1E50FF;
-    background: #ffffff;
-    border-radius: 14px;
-    padding: 18px;
-}
-.stFileUploader:hover {
-    background: #f0f5ff;
-    border-color: #0048D6;
-}
-
-/* ===================== 💬 KHUNG CHAT ===================== */
-.stChatMessage {
-    border-radius: 14px;
-    padding: 14px 20px;
-    font-size: 1.05em;
-    background: #FFFFFF;
-    border: 1px solid #e0e6f5;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-/* User */
-.stChatMessage[data-testid="stChatMessageUser"] {
-    margin-left: 20%;
-    border-left: 4px solid #006AFF;
-}
-/* Assistant */
-.stChatMessage[data-testid="stChatMessageAssistant"] {
-    margin-right: 20%;
-    background: #87CEEB;
-    border-left: 4px solid #003EA8;
-}
-
-/* ===================== ✏️ Ô GỬI TIN NHẮN ===================== */
-[data-testid="stChatInput"] {
-    background-color: white;
-    border-radius: 14px;
-    padding: 12px;
-    border-top: 2px solid #dfe6ff;
-    box-shadow: 0 -3px 10px rgba(0,0,0,0.05);
-}
-[data-testid="stChatInput"] button {
-    background: #FFFFFF !important;
-    color: blue !important;
-    border-radius: 8px;
-    font-weight: 600;
-}
-[data-testid="stChatInput"] button:hover {
-    background: #87CEEB !important;
-}
-
-/* ===================== 🔵 FOOTER FULL-WIDTH ===================== */
+/* (CSS omitted here for brevity in the saved file; keep same styling as original) */
+header, [data-testid="stHeader"] { display: none !important; }
+.custom-top-banner-wrapper { position: relative; width: 100vw; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; background: #87CEEB; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 130px; text-align: center; }
+.custom-top-banner-title { color: blue; font-weight: 800; font-size: 2.3em; margin: 0; }
+.custom-top-banner-sub { color: white; font-size: 1.15em; font-weight: 500; margin-top: 4px; }
+[data-testid="stAppViewContainer"] { background-color: #87CEEB; font-family: 'Inter', 'Segoe UI', sans-serif; color: #202020; }
+.section-title, h2, h3 { font-weight: 700; color: #003EA8; }
+.stFileUploader { border: 2px dashed #1E50FF; background: #ffffff; border-radius: 14px; padding: 18px; }
+.stFileUploader:hover { background: #f0f5ff; border-color: #0048D6; }
+.stChatMessage { border-radius: 14px; padding: 14px 20px; font-size: 1.05em; background: #FFFFFF; border: 1px solid #e0e6f5; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.stChatMessage[data-testid="stChatMessageUser"] { margin-left: 20%; border-left: 4px solid #006AFF; }
+.stChatMessage[data-testid="stChatMessageAssistant"] { margin-right: 20%; background: #87CEEB; border-left: 4px solid #003EA8; }
+[data-testid="stChatInput"] { background-color: white; border-radius: 14px; padding: 12px; border-top: 2px solid #dfe6ff; box-shadow: 0 -3px 10px rgba(0,0,0,0.05); }
+[data-testid="stChatInput"] button { background: #FFFFFF !important; color: blue !important; border-radius: 8px; font-weight: 600; }
+[data-testid="stChatInput"] button:hover { background: #87CEEB !important; }
 footer {visibility: hidden;}
-
-.custom-footer-container {
-    position: fixed;              /* LUÔN CỐ ĐỊNH Ở CHÂN TRANG */
-    bottom: 0;
-    left: 0;
-    width: 100vw;                 /* TRÀN FULL MÀN HÌNH */
-    background: #003EA8;
-    padding: 12px 0;
-    text-align: center;
-    color: white;
-    font-size: 0.9em;
-    box-shadow: 0 -3px 10px rgba(0,0,0,0.18);
-    z-index: 999999;              /* ƯU TIÊN HIỂN THỊ */
-}
-
-/* 🧱 TẠO KHOẢNG TRỐNG ĐỂ NỘI DUNG KHÔNG CHE FOOTER */
-html, body, [data-testid="stAppViewContainer"] {
-    padding-bottom: 90px !important;
-}
-
-/* ===================== ICON CHAT ===================== */
-.chat-icon {
-    font-size: 20px;
-    margin-right: 8px;
-}
-
-
+.custom-footer-container { position: fixed; bottom: 0; left: 0; width: 100vw; background: #003EA8; padding: 12px 0; text-align: center; color: white; font-size: 0.9em; box-shadow: 0 -3px 10px rgba(0,0,0,0.18); z-index: 999999; }
+html, body, [data-testid="stAppViewContainer"] { padding-bottom: 90px !important; }
+.chat-icon { font-size: 20px; margin-right: 8px; }
 </style>
-
 """, unsafe_allow_html=True)
-
 
 # ==================== ⚙️ CẤU HÌNH GEMINI CLIENT ====================
 @st.cache_resource
@@ -165,18 +46,8 @@ def get_gemini_client():
             st.stop()
 
 client = get_gemini_client()
+
 # ==================== ⚙️ LƯU CONFIG TOÀN CỤC ====================
-if "chat_config" not in st.session_state:
-    st.session_state.chat_config = types.GenerateContentConfig(
-        system_instruction=(
-            "Bạn là Thầy Chánh - Gia Sư AI THCS thân thiện..."
-        ),
-        temperature=1
-    )
-
-# ==================== 💬 KHỞI TẠO PHIÊN CHAT ====================
-
-# Lưu CONFIG vào session_state để có thể dùng lại khi xóa chat
 if "chat_config" not in st.session_state:
     st.session_state.chat_config = types.GenerateContentConfig(
         system_instruction=(
@@ -193,7 +64,6 @@ if "chat_session" not in st.session_state:
         model="gemini-2.5-flash",
         config=st.session_state.chat_config
     )
-
 
 # ==================== 🧠 GIAO DIỆN NGƯỜI DÙNG ====================
 st.markdown("""
@@ -236,8 +106,13 @@ for msg in st.session_state.chat_session.get_history():
     icon = "🤖" if msg.role == "model" else "👩‍🎓"
 
     with st.chat_message(role):
-        st.markdown(f"<span class='chat-icon'>{icon}</span>{msg.parts[0].text}", unsafe_allow_html=True)
-
+        # some parts may be bytes (images) or text; handle gracefully
+        try:
+            text = msg.parts[0].text
+            st.markdown(f"<span class='chat-icon'>{icon}</span>{text}", unsafe_allow_html=True)
+        except Exception:
+            # fallback: just show representation
+            st.markdown(f"<span class='chat-icon'>{icon}</span>{str(msg)}", unsafe_allow_html=True)
 
 # ==================== ✍️ NHẬP CHAT CẬP NHẬT NGÀY THÁNG ====================
 from datetime import datetime
@@ -251,7 +126,6 @@ def can_chi_year(year):
     can = can_list[(year + 6) % 10]
     chi = chi_list[(year + 8) % 12]
     return f"{can} {chi}"
-
 
 if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
 
@@ -288,53 +162,51 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
         "tự tạo hoặc dùng ngày khác."
     )
 
-    response = st.session_state.chat_session.send_message([
-        {"role": "system", "parts": [types.Part(text=system_time_note)]},
-        {"role": "user", "parts": [types.Part(text=prompt)]}
-    ])
-
-    # Chuẩn bị danh sách nội dung gửi lên AI
-    contents = []
+    # Chuẩn bị nội dung gửi lên Gemini
+    # Gộp system_time_note và prompt vào một phần text để tránh gửi 'role' trong send_message()
+    final_prompt = system_time_note + "\n\n" + prompt
+    contents = [types.Part(text=final_prompt)]
 
     if image_part:
-        contents.append(image_part)  # thêm ảnh nếu có
-        contents.append(types.Part(text=prompt))
+        # Nếu có ảnh, chèn ảnh ở đầu danh sách nội dung
+        contents.insert(0, image_part)
 
+        # Hiển thị bài tập đính kèm cho học sinh
         with st.chat_message("Học sinh"):
-            st.markdown(
-                f"<span class='chat-icon'>👩‍🎓</span>**Bài tập đính kèm:**",
-                unsafe_allow_html=True
-            )
+            st.markdown(f"<span class='chat-icon'>👩‍🎓</span>**Bài tập đính kèm:**", unsafe_allow_html=True)
             st.image(image_bytes, width=180)
             st.markdown(prompt)
-
     else:
-        contents.append(types.Part(text=prompt))
-
         with st.chat_message("Học sinh"):
-            st.markdown(
-                f"<span class='chat-icon'>👩‍🎓</span>{prompt}",
-                unsafe_allow_html=True
-            )
+            st.markdown(f"<span class='chat-icon'>👩‍🎓</span>{prompt}", unsafe_allow_html=True)
 
-
-    with st.spinner("⏳ Thầy Chánh đang suy nghĩ..."):
-        response = st.session_state.chat_session.send_message(contents)
+    # Gửi đến Gemini và hiển thị hiệu ứng "typing"
+    try:
+        with st.spinner("⏳ Thầy Chánh đang suy nghĩ..."):
+            response = st.session_state.chat_session.send_message(contents)
+    except Exception as e:
+        st.error(f"⚠️ Lỗi khi gọi API Gemini: {e}")
+        st.stop()
 
     # Hiệu ứng gõ chữ
     with st.chat_message("Thầy Chánh"):
         placeholder = st.empty()
         text_display = ""
-        for char in response.text:
+        # response may expose .text or require casting; handle safely
+        try:
+            resp_text = response.text
+        except Exception:
+            try:
+                resp_text = str(response)
+            except Exception:
+                resp_text = "Xin lỗi, Thầy không nhận được phản hồi từ API."
+
+        for char in resp_text:
             text_display += char
-            placeholder.markdown(
-                f"<span class='chat-icon'>🤖</span>{text_display}",
-                unsafe_allow_html=True
-            )
+            placeholder.markdown(f"<span class='chat-icon'>🤖</span>{text_display}", unsafe_allow_html=True)
             time.sleep(0.008)
 
-        st.session_state.last_response = response.text
-
+        st.session_state.last_response = resp_text
 
 # ==================== 🧾 FOOTER ====================
 st.markdown("""
@@ -346,54 +218,3 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
