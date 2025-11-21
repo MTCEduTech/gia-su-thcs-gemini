@@ -1,5 +1,6 @@
 # File: requirements.txt
 streamlit
 google-genai
-lichviet
+lunardate
 httpx
+
