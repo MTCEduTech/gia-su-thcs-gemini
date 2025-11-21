@@ -293,10 +293,13 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
         {"role": "user", "parts": [types.Part(text=prompt)]}
     ])
 
+    # Chuẩn bị danh sách nội dung gửi lên AI
+    contents = []
 
     if image_part:
-    contents.append(image_part)
-contents.append(types.Part(text=prompt))
+        contents.append(image_part)  # thêm ảnh nếu có
+        contents.append(types.Part(text=prompt))
+
         with st.chat_message("Học sinh"):
             st.markdown(
                 f"<span class='chat-icon'>👩‍🎓</span>**Bài tập đính kèm:**",
@@ -304,12 +307,16 @@ contents.append(types.Part(text=prompt))
             )
             st.image(image_bytes, width=180)
             st.markdown(prompt)
+
     else:
+        contents.append(types.Part(text=prompt))
+
         with st.chat_message("Học sinh"):
             st.markdown(
                 f"<span class='chat-icon'>👩‍🎓</span>{prompt}",
                 unsafe_allow_html=True
             )
+
 
     with st.spinner("⏳ Thầy Chánh đang suy nghĩ..."):
         response = st.session_state.chat_session.send_message(contents)
@@ -339,6 +346,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
