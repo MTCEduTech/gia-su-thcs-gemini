@@ -211,11 +211,12 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
 st.markdown("""
 <div class="custom-footer-container">
     © 2025 – Phát triển bởi Thầy Chánh |
-    <a href="https://dayhoctichcuc.netlify.app/" target="_blank" style="color: white; text-decoration: none;">
+    <a href="https://dayhoctichcuc.netlify.app/" style="color: white; text-decoration: none;">
         🏠 Về trang chủ BỘ CÔNG CỤ DHTC
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
