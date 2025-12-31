@@ -210,12 +210,13 @@ if prompt := st.chat_input("💬 Gõ câu hỏi của bạn tại đây..."):
 # ==================== 🧾 FOOTER ====================
 st.markdown("""
 <div class="custom-footer-container">
-    © 2025 – Phát triển bởi Thầy Chánh |
+    © 2025 By Thầy Chánh |
     <a href="https://dayhoctichcuc.netlify.app/" style="color: white; text-decoration: none;">
-        🏠 Về trang chủ BỘ CÔNG CỤ DHTC
+        🏠 TRANG CHỦ
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
